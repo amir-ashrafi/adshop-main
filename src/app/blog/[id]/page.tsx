@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // ✅ صفحه اصلی
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
   if (!blog) {
