@@ -22,17 +22,21 @@ const ProductFiltersWrapper: React.FC<ProductFiltersWrapperProps> = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const updateURL = (newSortBy?: SortOption, newCategoryFilter?: CategoryFilter, newSearchQuery?: string) => {
+  const updateURL = (
+    newSortBy?: SortOption,
+    newCategoryFilter?: CategoryFilter,
+    newSearchQuery?: string
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
-    
+
     if (newSortBy) {
       params.set('sort', newSortBy);
     }
-    
+
     if (newCategoryFilter) {
       params.set('category', newCategoryFilter);
     }
-    
+
     if (newSearchQuery !== undefined) {
       if (newSearchQuery.trim()) {
         params.set('search', newSearchQuery.trim());
@@ -40,7 +44,7 @@ const ProductFiltersWrapper: React.FC<ProductFiltersWrapperProps> = ({
         params.delete('search');
       }
     }
-    
+
     router.push(`/products?${params.toString()}`);
   };
 
@@ -65,34 +69,33 @@ const ProductFiltersWrapper: React.FC<ProductFiltersWrapperProps> = ({
   };
 
   return (
-<div className="space-y-4 p-5 rounded-xl bg-gray-100">
-  {/* جستجو و خلاصه محصولات */}
-  <div className="flex flex-col justify-around md:flex-row gap-4 lg:justify-center  w-full">
-    <div className="w-full  md:w-1/2">
-      <ProductSearch
-        searchQuery={initialSearchQuery}
-        onSearchChange={handleSearchChange}
-      />
-    </div>
-    <div className="w-full md:w-auto">
-      <ProductFilters
-    sortBy={initialSortBy}
-    categoryFilter={initialCategoryFilter}
-    onSortChange={handleSortChange}
-    onCategoryChange={handleCategoryChange}
-  />
-    </div>
-  </div>
-<ProductSummary
+    <div className="space-y-4 p-5 rounded-xl bg-gray-100">
+      {/* جستجو و خلاصه محصولات */}
+      <div className="flex flex-col justify-around md:flex-row gap-4 lg:justify-center  w-full">
+        <div className="w-full md:w-1/2">
+          <ProductSearch
+            searchQuery={initialSearchQuery}
+            onSearchChange={handleSearchChange}
+          />
+        </div>
+        <div className="w-full md:w-auto">
+          <ProductFilters
+            sortBy={initialSortBy}
+            categoryFilter={initialCategoryFilter}
+            onSortChange={handleSortChange}
+            onCategoryChange={handleCategoryChange}
+          />
+        </div>
+      </div>
+      <ProductSummary
         productCount={productCount}
         categoryFilter={initialCategoryFilter}
         searchQuery={initialSearchQuery}
         onClearFilters={handleClearFilters}
       />
-  {/* فیلترها */}
-  
-</div>
+      {/* فیلترها */}
+    </div>
   );
 };
 
-export default ProductFiltersWrapper; 
+export default ProductFiltersWrapper;

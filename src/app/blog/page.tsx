@@ -7,7 +7,8 @@ export interface BlogPost {
   id: string;
   title: string;
   content: string;
-  image?: string;
+  // Allow nulls returned from Prisma
+  image?: string | null;
   createdAt: Date;
   updatedAt: Date;
   published: boolean;
@@ -17,8 +18,14 @@ interface SearchParams {
   search?: string;
 }
 
-export default async function BlogPage({ searchParams }: { searchParams?: SearchParams }) {
-  const search = searchParams?.search || '';
+type Props = {
+  searchParams?: Promise<SearchParams>;
+};
+
+export default async function BlogPage({ searchParams }: Props) {
+  // Resolve the searchParams promise (even if undefined)
+  const { search = '' } = (await searchParams) ?? {};
+
   const posts: BlogPost[] = await prisma.blogPost.findMany({
     where: {
       published: true,
@@ -34,7 +41,9 @@ export default async function BlogPage({ searchParams }: { searchParams?: Search
 
   return (
     <main className="max-w-6xl w-full mx-auto py-10 my-5 px-4">
-      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800"> وبلاگ اشرفی تک</h1>
+      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
+        وبلاگ اشرفی تک
+      </h1>
 
       <form method="get" className="mb-10 flex gap-3 items-center justify-center">
         <input
@@ -52,11 +61,13 @@ export default async function BlogPage({ searchParams }: { searchParams?: Search
       </form>
 
       {posts.length === 0 && (
-        <p className="text-center text-gray-500">هیچ پستی با این مشخصات یافت نشد.</p>
+        <p className="text-center text-gray-500">
+          هیچ پستی با این مشخصات یافت نشد.
+        </p>
       )}
 
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post: BlogPost) => (
+        {posts.map((post) => (
           <Link
             key={post.id}
             href={`/blog/${post.id}`}
@@ -64,10 +75,10 @@ export default async function BlogPage({ searchParams }: { searchParams?: Search
           >
             {post.image && (
               <Image
-              width={25}
-              height={25}
                 src={post.image}
                 alt={post.title}
+                width={400}
+                height={250}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
             )}
