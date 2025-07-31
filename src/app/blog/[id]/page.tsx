@@ -1,10 +1,18 @@
+import { Metadata } from 'next';
 import { getBlogById } from '@/modules/blog/services';
 import BlogDetail from '@/components/blog/BlogDetail';
 import customMetadataGenerator from '@/lib/metadata';
 import { BlogPost } from '@/types';
-import React from 'react';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+// 🟢 اصلاح تایپ ورودی
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+// ✅ metadata generator
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
   if (!blog) {
@@ -18,7 +26,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   });
 }
 
-export default async function Page({ params }: any) {
+// ✅ صفحه اصلی
+export default async function Page({ params }: PageProps) {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
   if (!blog) {
