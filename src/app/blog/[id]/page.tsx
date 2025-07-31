@@ -18,11 +18,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   });
 }
 
-interface PageProps {
-  params: { id: string };
-}
-
-export default async function Page({ params }: PageProps): Promise<JSX.Element> {
+export default async function Page({ params }: any) {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
   if (!blog) {
