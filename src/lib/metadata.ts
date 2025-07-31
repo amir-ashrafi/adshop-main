@@ -8,9 +8,10 @@ type ProductMetadata = {
   keywords?: string[];
   images?: Image[] | null;
 };
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export default function customMetadataGenerator({
-  title = 'digital shop',
+  title = 'AshrafiTech ',
   description = 'a digital shop for ...',
   keywords = ['digital', 'laptop', 'mobile'],
   images = undefined,
@@ -22,7 +23,7 @@ export default function customMetadataGenerator({
     openGraph: {
       title,
       type: 'website',
-      url: `http://localhost:3000/${title}`,
+      url: `${baseUrl}/${title}`,
       images,
     } as OpenGraph,
   };

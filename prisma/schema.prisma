@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,37 +6,82 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-// generate schema
+
+model Product {
+  id             String          @id @default(uuid())
+  name           String          @db.VarChar(255)
+  description    String?
+  price          Float?          @default(0.0)
+  quantity       Int?            @default(0)
+  category       ProductCategory
+  discount       Float?          @default(0)
+  discountEndsAt DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  cart           CartItem[]
+  images         Image[]
+  orderItems     OrderItem[]
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  image     String
+  productId String?
+  Product   Product? @relation(fields: [productId], references: [id])
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  productId String
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  total     Float
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(255)
+  content     String
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  published   Boolean  @default(false)
+}
 
 enum ProductCategory {
-  MOBILE
-  LAPTOP
   WATCH
+  MOBILE
+  AIRPODS
+  LAPTOP
+  COMPUTER
+  MONITOR
   OTHERS
 }
 
-model Product{
-  id String @id @default(uuid())
-  name String @db.VarChar(255)
-  category ProductCategory
-  description String?
-  price Float? @default(0.0)
-  quantity Int? @default(0)  
-  images Image[]
-  cart CartItem[]
- }
-
- model Image{
-  id String @id @default(uuid())
-  image String
-  Product Product? @relation(fields: [productId],references: [id])
-  productId String?
- }
-
-model CartItem{
-  id Int @id @default(autoincrement())
-  userId String
-  productId String
-  quantity Int
-  product Product @relation(fields: [productId],references: [id])
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  SHIPPED
+  DELIVERED
 }

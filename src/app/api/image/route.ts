@@ -123,9 +123,7 @@ export async function DELETE(req: NextRequest) {
   // Remove the image file from the filesystem
   try {
     await fs.unlink(imagePath);
-    console.log(`Deleted file: ${imagePath}`);
   } catch (fileError) {
-    console.error(`Error deleting file ${imagePath}:`, fileError);
     return NextResponse.json(
       { error: 'File deletion failed' },
       { status: 500 },

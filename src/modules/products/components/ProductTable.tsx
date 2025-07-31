@@ -13,10 +13,11 @@ import {
 import { Edit, PlusCircle, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { deleteProduct, getProducts } from '../services';
+import { deleteProduct } from '../services';
+import { Product } from '@prisma/client';
 
 const ProductTable = (props: {
-  products: Awaited<ReturnType<typeof getProducts>>;
+  products: Product[];
 }) => {
   const { products } = props;
 
@@ -55,13 +56,13 @@ const ProductTable = (props: {
               <TableCell className="text-center">{product.price}</TableCell>
               <TableCell className="text-center">{product.quantity}</TableCell>
               <TableCell className="text-center">
-                <Image
-                  src={product.images[0]?.image || '/assets/noImage.jpg'}
-                  alt={product.name}
-                  width={50}
-                  height={50}
-                  className="rounded-full m-auto"
-                />
+              <Image
+  src={product.images?.[0]?.image || '/assets/noImage.jpg'}
+  alt={product.name || 'محصول'}
+  width={50}
+  height={50}
+  className="rounded-full m-auto"
+/>
               </TableCell>
               <TableCell className="text-center">
                 <div className="flex justify-center gap-2 items-center">

@@ -39,13 +39,13 @@ async function page({ params }: { params: Promise<{ id: string }> }) {
   };
 
   return (
-    <section>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <ProductDetail {...product} />;
-    </section>
+<section className="w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-10 max-w-screen-xl mx-auto">
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+  />
+  <ProductDetail {...product} />
+</section>
   );
 }
 

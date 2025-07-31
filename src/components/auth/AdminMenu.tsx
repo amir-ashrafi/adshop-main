@@ -7,9 +7,9 @@ const AdminMenu = () => {
     <UserButton>
       <UserButton.MenuItems>
         <UserButton.Link
-          label="Dashboard"
+          label="داشبورد"
           labelIcon={<LayoutDashboard size="sm" />}
-          href="/dashboard"
+          href="/dashboard/original"
         />
       </UserButton.MenuItems>
     </UserButton>

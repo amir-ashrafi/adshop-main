@@ -3,15 +3,10 @@ import * as React from 'react';
 
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
-import { DATA } from '@/modules/products/mock/products';
-import { useSearchParams } from 'next/navigation';
 
 function CatalogList() {
-  const params = useSearchParams();
-  const id = params.get('id');
-  // id += 1;
-  //getImageByPrductId(id)
-  const images = DATA[0].images;
+  // TODO: مقداردهی داینامیک به images
+  const images: any[] = [];
   return (
     <div className="flex flex-wrap justify-center mb-4">
       {images?.map((_image: any, index) => {

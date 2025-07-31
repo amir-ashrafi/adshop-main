@@ -1,38 +1,31 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { MonitorSmartphone, ShoppingCart } from 'lucide-react';
+import { MonitorSmartphone } from 'lucide-react';
 import Link from 'next/link';
 import { Toaster } from '@/components/ui/sonner';
 import { ClerkProvider } from '@clerk/nextjs';
 import Auth from '@/components/auth';
 import ReactQueryProvider from '@/providers/ReactQuery';
 import CartDropdown from '@/components/cart';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
+import samimFont from '@/app/samimFont';
+import { faIR } from '@clerk/localizations'
 export const metadata: Metadata = {
-  title: 'Digital shop',
-  description: 'digital shop to buy digital stuff',
+  title: 'AshrafiTech',
+  description: 'AshrafiTech to buy digital stuff',
 };
+
+export interface RootLayoutProps {
+  children: React.ReactNode;
+  ads?: React.ReactNode;
+}
 
 export default function RootLayout({
   children, //slot for children
   ads, // slot for ads
-}: Readonly<{
-  children: React.ReactNode;
-  ads: React.ReactNode;
-}>) {
+}: RootLayoutProps) {
   return (
     <ClerkProvider
+      localization={faIR}
       appearance={{
         elements: {
           headerTitle: {
@@ -40,10 +33,7 @@ export default function RootLayout({
           },
           formButtonPrimary: {
             fontSize: 16,
-            // backgroundColor: '#000',
-            // '&:hover': {
-            //   backgroundColor: '#f00',
-            // },
+            
           },
         },
       }}
@@ -51,30 +41,30 @@ export default function RootLayout({
       <ReactQueryProvider>
         <html lang="en">
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={` ${samimFont.variable} font-samim antialiased leading-8 overflow-x-hidden`}
           >
-            <main className="flex flex-col justify-between min-h-screen">
-              <header className="fixed flex justify-between items-center shadow-xl bg-white px-20 w-full h-20 z-40">
-                <div className="flex items-center gap-3">
-                  <MonitorSmartphone />
-                  <Link href="/" className="font-bold text-2xl">
-                    Digital Shop
-                  </Link>
-                </div>
+            <main className="flex flex-col min-h-screen ">
+              <header className="fixed flex justify-between items-center shadow-xl bg-white px-8 w-full h-20 z-40">
                 <div className="flex items-center gap-2">
-                  <Auth />
                   <CartDropdown />
+                  <Auth />
+                </div>
+                <div className="flex items-center gap-3 h-12">
+                  <Link href="/" className="font-bold text-2xl ">
+                    اشرفی‌تک
+                  </Link>
+                  <MonitorSmartphone />
                 </div>
               </header>
-              <div className="mt-28 px-20 relative">
+              
+              <div className="relative mt-10 ">
                 {children}
                 <Toaster />
               </div>
-              <div className='px-20 mt-28'>
-                {ads}
-              </div>
-              <footer className="bg-black w-full text-white flex items-center justify-center h-10">
-                <p>&copy; 2025 JS with AMIRREZA ASHRAFI. All rights reserved.</p>
+              
+              <footer className="bg-blue-600/40 font-bold fixed w-full bottom-0 left-0 text-white flex items-center justify-center h-10">
+                <p>
+                تمامی حقوق مادی و معنوی این سایت متعلق به امیررضا اشرفی می‌باشد.</p>
               </footer>
             </main>
           </body>

@@ -1,14 +1,11 @@
+import { Suspense } from 'react';
 import ProductDashboardView from '@/modules/products/views/ProductDashboardView';
-import React from 'react';
-
-// export const dynamic = 'force-dynamic';
-// export const revalidate = 30;
-
+import ProductTableSkeleton from '@/components/l'
 function DashboardProductPage() {
   return (
-    <div>
+    <Suspense fallback={<ProductTableSkeleton />}>
       <ProductDashboardView />
-    </div>
+    </Suspense>
   );
 }
 

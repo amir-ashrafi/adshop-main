@@ -1,4 +1,3 @@
-import React from 'react';
 import ProductForm from '../components/ProductFormWithAction';
 import { getProductById } from '../services';
 

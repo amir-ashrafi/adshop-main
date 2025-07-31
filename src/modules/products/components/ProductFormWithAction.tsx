@@ -43,10 +43,19 @@ const ProductForm = (props: { product: Product | null }) => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (formData: FormData) => {
-    setSubmitted(true);
-    action(formData);
-  };
+const handleSubmit = async (formData: FormData) => {
+  const discount = parseFloat(formData.get('discount') as string) || 0;
+  const discountEndsAt = formData.get('discountEndsAt') as string;
+
+  if (discount > 0 && !discountEndsAt) {
+    toast.error('لطفاً تاریخ پایان تخفیف را مشخص کنید.');
+    return;
+  }
+
+  setSubmitted(true);
+  action(formData);
+};
+
 
   useEffect(() => {
     if (!submitted) return;
@@ -55,92 +64,148 @@ const ProductForm = (props: { product: Product | null }) => {
   }, [state]);
 
   return (
-    <Card className="w-[500px] mx-auto mt-10">
-      <form className="max-w-lg" action={handleSubmit}>
-        <input type="hidden" name="id" value={product?.id || ''} />
-        <CardHeader>
-          <CardTitle> Product</CardTitle>
-          <CardDescription>Create New Product</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="my-2">
-            <Label htmlFor="name">Product Name</Label>
-            <Input name="name" id="name" defaultValue={data?.name || ''} />
-            {error?.name && (
-              <span className="text-red-600 ml-2 mt-2">{error.name}</span>
-            )}
-          </div>
-          <div className="my-2">
-            <Label htmlFor="category">Category</Label>
-            <Select
-              name="category"
-              defaultValue={data?.category || ProductCategory.OTHERS}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.values(ProductCategory).map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="my-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              name="description"
-              id="description"
-              defaultValue={data?.description || ''}
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="price">Price</Label>
+    <main className=" flex py-6 justify-center bg-white bg-muted ">
+  <Card className="w-full max-w-2xl shadow-2xl border-none bg-gradient-to-br shadow-background from-blue-500 via-indigo-600 to-purple-600 text-white">
+    <form className="w-full" action={handleSubmit}>
+      <input type="hidden" name="id" value={product?.id || ''} />
+      
+      <CardHeader>
+        <CardTitle className="text-2xl w-full flex justify-center">
+          {product?.id ? 'ویرایش محصول' : 'افزودن محصول جدید'}
+        </CardTitle>
+        <CardDescription className="text-white/80 w-full flex justify-center">اطلاعات محصول را وارد کنید</CardDescription>
+      </CardHeader>
+
+      <CardContent className="grid gap-4">
+        <div className='space-y-3'>
+          <Label htmlFor="name" className='w-full flex justify-center'>نام محصول</Label>
+          <Input className='focus:bg-white bg-white/90 text-black' name="name" id="name" defaultValue={data?.name || ''} />
+          {error?.name && <p className="text-red-200  text-sm mt-1">{error.name}</p>}
+        </div>
+
+        <div className='space-y-3'>
+          <Label htmlFor="category" className='w-full flex justify-center'>دسته‌بندی</Label>
+          <Select
+            name="category"
+            defaultValue={data?.category || ProductCategory.OTHERS}
+            
+          >
+            <SelectTrigger className="focus:bg-white bg-white/90 text-black">
+              <SelectValue placeholder="انتخاب دسته‌بندی" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(ProductCategory).map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className='space-y-3'>
+          <Label htmlFor="description" className='w-full flex justify-center'>توضیحات</Label>
+          <Textarea
+            name="description"
+            id="description"
+            defaultValue={data?.description || ''}
+            className="focus:bg-white bg-white/90 text-black"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className='space-y-3'>
+            <Label className='w-full flex justify-center' htmlFor="price">قیمت</Label>
             <Input
               name="price"
               type="number"
               id="price"
               step="0.01"
               defaultValue={data?.price || ''}
+              className='focus:bg-white bg-white/90 text-black'
             />
             {error?.price && (
-              <span className="text-red-600 ml-2 mt-2">{error.price}</span>
+              <p className="text-red-200 text-sm mt-1">{error.price}</p>
             )}
           </div>
-          <div className="my-2">
-            <Label htmlFor="quantity">Quantity</Label>
+
+          <div className='space-y-3'>
+            <Label className='w-full flex justify-center' htmlFor="quantity">تعداد موجود</Label>
             <Input
               name="quantity"
               type="number"
               id="quantity"
               defaultValue={data?.quantity || ''}
+              className='focus:bg-white bg-white/90 text-black'
             />
             {error?.quantity && (
-              <span className="text-red-600 ml-2 mt-2">{error.quantity}</span>
+              <p className="text-red-200 text-sm mt-1">{error.quantity}</p>
             )}
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/products">Back</Link>
-          </Button>
-          <Button type="submit">
-            {isPending
-              ? 'loading...'
-              : product?.id
-                ? 'Update Product'
-                : 'Add Product'}
-          </Button>
-        </CardFooter>
-      </form>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className='space-y-3'>
+            <Label className='w-full flex justify-center' htmlFor="discount">تخفیف (%)</Label>
+            <Input
+              name="discount"
+              type="number"
+              id="discount"
+              step="0.1"
+              min="0"
+              max="100"
+              className="focus:bg-white bg-white/90 text-black"
+              defaultValue={data?.discount?.toString() || '0'}
+            />
+            {error?.discount && (
+              <p className="text-red-200 text-sm mt-1">{error.discount}</p>
+            )}
+          </div>
+
+          <div className='space-y-3'>
+            <Label className='w-full flex justify-center' htmlFor="discountEndsAt">پایان تخفیف</Label>
+            <Input
+              type="datetime-local"
+              id="discountEndsAt"
+              name="discountEndsAt"
+              className="focus:bg-white bg-white/90 text-black"
+              defaultValue={
+                product?.discountEndsAt
+                  ? new Date(
+                      new Date(product.discountEndsAt).getTime() -
+                        new Date().getTimezoneOffset() * 60000
+                    )
+                      .toISOString()
+                      .slice(0, 16)
+                  : ''
+              }
+            />
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" asChild className="bg-white text-black">
+          <Link href="/dashboard/products">بازگشت</Link>
+        </Button>
+        <Button  type="submit" disabled={isPending}>
+          {isPending
+            ? 'در حال ذخیره...'
+            : product?.id
+            ? 'ذخیره تغییرات'
+            : 'افزودن محصول'}
+        </Button>
+      </CardFooter>
+
       {product?.id && (
         <CardFooter>
-          <UploadImage productId={product?.id} />
+          <UploadImage productId={product.id} />
         </CardFooter>
       )}
-    </Card>
+    </form>
+  </Card>
+</main>
+
   );
 };
 

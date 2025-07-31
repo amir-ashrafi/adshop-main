@@ -17,17 +17,11 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    } else {
-      setFile(null);
-    }
+    setFile(selectedFile || null);
   };
 
   const updateImageList = (imageId: string) => {
-    setImages(
-      (preState) => preState?.filter((img) => img.id !== imageId) || null,
-    );
+    setImages((preState) => preState?.filter((img) => img.id !== imageId) || null);
   };
 
   const handleDelete = async (imageId: string) => {
@@ -44,16 +38,13 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
   };
 
   const handleUpload = async () => {
-    if (!file || !productId) {
-      alert('please select a valid file and product');
-    } else {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('productId', productId);
-      const { data } = await uploadImage(formData);
-      setImages(data);
-      setFile(null);
-    }
+    if (!file || !productId) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('productId', productId);
+    const { data } = await uploadImage(formData);
+    setImages(data);
+    setFile(null);
   };
 
   useEffect(() => {
@@ -72,28 +63,25 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
         />
         <Button onClick={handleUpload}>Upload Image</Button>
       </div>
-
       {loading ? (
         <Spinner />
       ) : (
         <div className="flex gap-2 mt-4 flex-wrap items-center justify-between">
-          {images?.map((item) => {
-            return (
-              <div className="relative group" key={item.id}>
-                <CircleX
-                  className="absolute top-1 right-1 text-red-500  p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  onClick={() => handleDelete(item.id)}
-                />
-                <Image
-                  width={100}
-                  height={100}
-                  alt="product image"
-                  src={item.image}
-                  className="mt-4 mx-auto rounded-md"
-                />
-              </div>
-            );
-          })}
+          {images?.map((item) => (
+            <div className="relative group" key={item.id}>
+              <CircleX
+                className="absolute top-1 right-1 text-red-500 p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={() => handleDelete(item.id)}
+              />
+              <Image
+                width={100}
+                height={100}
+                alt="product image"
+                src={item.image}
+                className="mt-4 mx-auto rounded-md"
+              />
+            </div>
+          ))}
         </div>
       )}
     </div>

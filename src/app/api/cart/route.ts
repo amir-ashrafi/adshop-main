@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const user = await currentUser();
   const userId = user?.id;
   if (userId) {

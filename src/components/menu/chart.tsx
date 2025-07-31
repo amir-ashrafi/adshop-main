@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
@@ -18,32 +18,41 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "سفارش‌ها",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
+
 type ChartDataItem = {
-    month: string
-    desktop: number
+  month: string
+  desktop: number
+}
+
+export default function ChartComponent({ chartData }: { chartData: ChartDataItem[] }) {
+  const totalOrders = chartData.reduce((sum, item) => sum + item.desktop, 0)
+  const averageOrders = totalOrders / chartData.length
+  const currentMonthOrders = chartData[chartData.length - 1]?.desktop || 0
+  const previousMonthOrders = chartData[chartData.length - 2]?.desktop || 0
+
+  let trendPercentage = 0
+  if (previousMonthOrders > 0) {
+    trendPercentage = ((currentMonthOrders - previousMonthOrders) / previousMonthOrders) * 100
   }
-export default function ChartComponent({chartData}:{chartData:ChartDataItem[]}) {
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+    <Card dir="rtl">
+      <CardHeader className="text-right">
+        <CardTitle>آمار سفارش‌های ماهانه</CardTitle>
+        <CardDescription>آخرین آمار ۶ ماه گذشته</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
             data={chartData}
-            margin={{
-              top: 20,
-            }}
+            margin={{ top: 20 }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
@@ -57,7 +66,7 @@ export default function ChartComponent({chartData}:{chartData:ChartDataItem[]}) 
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+            <Bar dataKey="desktop"  fill="#3b82f6"  radius={8}>
               <LabelList
                 position="top"
                 offset={12}
@@ -68,12 +77,15 @@ export default function ChartComponent({chartData}:{chartData:ChartDataItem[]}) 
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex-col items-end gap-2 text-sm text-right">
+        <div className="flex gap-2 font-medium leading-none items-center">
+          {trendPercentage > 0 ? 'روند صعودی' : 'روند نزولی'} به میزان 
+          <span className="font-bold px-1">{Math.abs(trendPercentage).toFixed(1)}٪</span>
+          در این ماه
+          <TrendingUp className={`h-4 w-4 ${trendPercentage < 0 ? 'rotate-180' : ''}`} />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          میانگین {averageOrders.toFixed(1)} سفارش در ماه
         </div>
       </CardFooter>
     </Card>

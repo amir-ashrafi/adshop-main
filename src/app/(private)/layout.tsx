@@ -1,7 +1,8 @@
+import { clerkClient } from '@clerk/nextjs/server';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import React from 'react';
-import Sidebar from '@/components/Sidebar';
+import { Suspense } from 'react';
+import Sidebar from '@/components/menu/Sidebar';
 async function layout({
   children,
 }: Readonly<{
@@ -12,12 +13,12 @@ async function layout({
   if (!isAdmin) redirect('/');
   return (
     <>
-    
     <Sidebar/>
-    <div>
-      {children}
+    <div className='p-14'>
+      <Suspense fallback={<div className="w-full flex justify-center items-center min-h-[60vh]"><span className="text-lg font-bold animate-pulse">در حال بارگذاری...</span></div>}>
+        {children}
+      </Suspense>
     </div>
-    
     </>
   );
 }
