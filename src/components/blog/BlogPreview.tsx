@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useEffect, useState } from 'react';
+import Image from "next/image";
 import Link from 'next/link';
 import { ArrowDownLeft } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,8 +10,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton"; // ← افزودن Skeleton
 
@@ -67,7 +66,9 @@ export default function BlogPreviewCarousel() {
                       <Card>
                         <CardContent className="p-3 space-y-2">
                           {post.image && (
-                            <img
+                            <Image
+                            width={25}
+                            height={25}
                               src={post.image}
                               alt={post.title}
                               className="w-full h-40 object-cover rounded"

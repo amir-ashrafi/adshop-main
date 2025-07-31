@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Find all products with expired discounts
     const expiredProducts = await prisma.product.findMany({
@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error expiring discounts:', error);
     return NextResponse.json(
       { error: 'Failed to expire discounts' },
@@ -83,6 +84,7 @@ export async function GET() {
     });
 
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error checking expired discounts:', error);
     return NextResponse.json(
       { error: 'Failed to check expired discounts' },

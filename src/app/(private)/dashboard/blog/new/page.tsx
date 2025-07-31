@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Label } from '@/components/ui';
-
+import Image from 'next/image';
 export default function NewBlogPostPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -70,9 +70,11 @@ export default function NewBlogPostPage() {
         </Button>
       </div>
       {image && (
-        <img
+        <Image
           src={image}
           alt="blog"
+          width={25}
+          height={25}
           className="mt-4 rounded-md w-48 h-32 object-cover border"
         />
       )}

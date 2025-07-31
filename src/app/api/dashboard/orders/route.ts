@@ -54,7 +54,7 @@ export async function GET() {
             name = user.username || '';
           }
           // Get best email
-          let email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || 'Unknown';
+          const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || 'Unknown';
           if (!name || name.trim() === '') {
             name = email;
           }
@@ -115,6 +115,8 @@ export async function GET() {
 
     return NextResponse.json(transformedOrders);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('error occurred:',error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -136,6 +138,8 @@ export async function PATCH(req: Request) {
     });
     return NextResponse.json({ success: true, order });
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to update order status:', error);
     return NextResponse.json({ error: 'Failed to update order status' }, { status: 500 });
   } finally {
     await prisma.$disconnect();

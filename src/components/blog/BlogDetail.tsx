@@ -1,11 +1,13 @@
 import { BlogPost } from '@/types';
-
+import Image from 'next/image';
 export default function BlogDetail(post: BlogPost) {
   return (
     <article className="max-w-3xl mx-auto py-4 px-4 bg-white rounded-xl shadow-sm">
       {post.image && (
         <div className="w-full h-72 mb-6 overflow-hidden rounded-xl">
-          <img
+          <Image
+          height={25}
+          width={25}
             src={post.image}
             alt={post.title}
             className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"

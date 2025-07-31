@@ -24,8 +24,9 @@ const LaptopProducts: React.FC = () => {
         const allProducts = await getProducts(false, 'bestselling', 'LAPTOP')
         setLaptopProducts(allProducts)
       } catch (error) {
-        // خطا را نادیده می‌گیریم
-      } finally {
+  // eslint-disable-next-line no-console
+  console.error('Failed to fetch laptop products:', error)
+} finally {
         setIsLoading(false)
       }
     }

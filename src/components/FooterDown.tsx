@@ -116,8 +116,6 @@ const rawColumns = Array.from({ length: columnCount }, (_, i) =>
   linkSite.slice(i * itemsPerColumn, (i + 1) * itemsPerColumn)
 )
 
-// مرحله 2: آرایه‌ها را "transpose" می‌کنیم تا ستونی نمایش داده بشن
-const maxColLength = Math.max(...rawColumns.map(col => col.length))
 const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
   rawColumns.map(col => col[rowIndex]).filter(Boolean)
 )

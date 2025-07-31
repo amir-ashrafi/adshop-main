@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
 import { CircleX } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { PrismaType } from '@/lib/prisma';
 import { deleteImage, fetchImages, uploadImage } from '../services/image';
 import Spinner from '@/components/Spinner';
@@ -31,11 +31,11 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
     setLoading(false);
   };
 
-  const getImages = async () => {
+  const getImages = useCallback(async () => {
     const data = await fetchImages(productId);
     setImages(data.images);
     setLoading(false);
-  };
+  }, [productId]);
 
   const handleUpload = async () => {
     if (!file || !productId) return;
@@ -49,7 +49,7 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
 
   useEffect(() => {
     getImages();
-  }, [productId]);
+  }, [getImages]);
 
   return (
     <div className="w-full">
@@ -87,4 +87,5 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
     </div>
   );
 };
+
 export default UploadImage;

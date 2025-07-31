@@ -102,6 +102,8 @@ export const upsertProduct = async (
     revalidatePath('/dashboard/products');
     return { error: null, data: result };
   } catch (e) {
+    // eslint-disable-next-line no-console
+      console.error('Upsert Error:', e);
     return { data: prevData.data, error: { general: 'upsert failed' } };
   }
 };

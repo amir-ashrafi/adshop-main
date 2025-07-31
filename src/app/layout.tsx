@@ -20,8 +20,7 @@ export interface RootLayoutProps {
 }
 
 export default function RootLayout({
-  children, //slot for children
-  ads, // slot for ads
+  children
 }: RootLayoutProps) {
   return (
     <ClerkProvider

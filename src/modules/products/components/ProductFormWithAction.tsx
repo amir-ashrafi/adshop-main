@@ -57,11 +57,12 @@ const handleSubmit = async (formData: FormData) => {
 };
 
 
-  useEffect(() => {
-    if (!submitted) return;
-    if (error) toast.error('Failed');
-    else if (data) toast.success('success');
-  }, [state]);
+useEffect(() => {
+  if (!submitted) return;
+  if (error) toast.error('Failed');
+  else if (data) toast.success('success');
+}, [submitted, error, data]);
+
 
   return (
     <main className=" flex py-6 justify-center bg-white bg-muted ">

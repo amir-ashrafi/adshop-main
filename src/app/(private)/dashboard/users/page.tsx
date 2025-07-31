@@ -28,6 +28,7 @@ export default function UsersPage() {
         const data = await res.json();
         setUsers(data.users || []);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error("Error fetching users:", err);
       } finally {
         setLoading(false);
@@ -72,6 +73,7 @@ export default function UsersPage() {
         ).filter((u) => !(action === "delete" && u.id === userId))
       );
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Error performing action:", err);
       alert("مشکلی پیش آمده است");
     }

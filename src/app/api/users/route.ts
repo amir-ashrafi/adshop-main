@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { error } from "console";
 
 const CLERK_API_BASE = "https://api.clerk.com/v1";
 const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY;
 
 async function fetchClerk(path: string, options: RequestInit = {}) {
   if (!CLERK_SECRET_KEY) throw new Error("CLERK_SECRET_KEY not set");
+  
 
-  console.log("Calling Clerk API:", `${CLERK_API_BASE}${path}`, options);
 
   const res = await fetch(`${CLERK_API_BASE}${path}`, {
     ...options,
@@ -20,10 +19,7 @@ async function fetchClerk(path: string, options: RequestInit = {}) {
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error("Clerk response status:", res.status);
-    console.error("Clerk response headers:", JSON.stringify([...res.headers]));
-    console.error("Clerk response body:", text);
+    
   }
 
   return res;
@@ -137,7 +133,7 @@ export async function PATCH(request: NextRequest) {
       } catch {
         // اگر json نیست نادیده بگیر
       }
-      console.error("Clerk API error:", errorText, errorJson);
+      
       return NextResponse.json(
         { error: "Clerk API request failed", detail: errorJson || errorText },
         { status: 500 }

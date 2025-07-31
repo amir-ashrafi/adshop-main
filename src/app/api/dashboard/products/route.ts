@@ -62,6 +62,7 @@ export async function GET() {
 
     return NextResponse.json(transformedOrders);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching orders:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

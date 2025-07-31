@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button, Input, Label } from '@/components/ui';
 
 interface Props {
@@ -41,7 +42,7 @@ export default function UploadBlogImage({ blogId, image, setImage }: Props) {
         </Button>
       </div>
       {image && (
-        <img src={image} alt="blog" className="mt-4 rounded-md w-40 h-32 object-cover" />
+        <Image height={32} width={40} src={image} alt="blog" className="mt-4 rounded-md w-40 h-32 object-cover" />
       )}
     </div>
   );

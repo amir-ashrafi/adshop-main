@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
-
+import Image from 'next/image';
 interface BlogPost {
   id: string;
   title: string;
@@ -79,7 +79,9 @@ export default function DashboardBlogPage() {
           className="border rounded-lg p-4 bg-slate-200 shadow flex flex-col sm:flex-row gap-4"
         >
           {post.image && (
-            <img
+            <Image
+            height={25}
+            width={25}
               src={post.image}
               alt={post.title}
               className="w-full sm:w-32 sm:h-24 h-48 object-cover rounded"

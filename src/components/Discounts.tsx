@@ -28,6 +28,7 @@ const Discounts: React.FC = () => {
         })
         setDiscountProducts(validDiscountProducts)
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('خطا در دریافت محصولات تخفیف‌دار:', error)
       } finally {
         setIsLoading(false)

@@ -67,6 +67,7 @@ export async function GET() {
 
     return NextResponse.json(chartData);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching chart data:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

@@ -42,7 +42,7 @@ export async function GET() {
           if (!name || name.trim() === '') {
             name = user.username || '';
           }
-          let email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || '';
+          const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || '';
           if (!name || name.trim() === '') {
             name = email;
           }
@@ -69,6 +69,7 @@ export async function GET() {
 
     return NextResponse.json(customers);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching customer data:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

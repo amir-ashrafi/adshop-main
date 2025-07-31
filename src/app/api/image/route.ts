@@ -121,14 +121,17 @@ export async function DELETE(req: NextRequest) {
   const imagePath = path.join(process.cwd(), 'public', image.image);
 
   // Remove the image file from the filesystem
-  try {
-    await fs.unlink(imagePath);
-  } catch (fileError) {
-    return NextResponse.json(
-      { error: 'File deletion failed' },
-      { status: 500 },
-    );
-  }
+try {
+  await fs.unlink(imagePath);
+} catch (fileError) {
+  // eslint-disable-next-line no-console
+  console.error('File deletion error:', fileError);
+  return NextResponse.json(
+    { error: 'File deletion failed' },
+    { status: 500 },
+  );
+}
+
 
   await prisma.image.delete({ where: { id: imageId } });
 

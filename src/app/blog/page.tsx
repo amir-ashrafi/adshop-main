@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-
+import Image from 'next/image';
 export const dynamic = 'force-dynamic';
 
 export interface BlogPost {
@@ -63,7 +63,9 @@ export default async function BlogPage({ searchParams }: { searchParams?: Search
             className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 group border border-gray-100"
           >
             {post.image && (
-              <img
+              <Image
+              width={25}
+              height={25}
                 src={post.image}
                 alt={post.title}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
