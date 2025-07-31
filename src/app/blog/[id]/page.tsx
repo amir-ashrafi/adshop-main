@@ -4,7 +4,6 @@ import customMetadataGenerator from '@/lib/metadata';
 import { BlogPost } from '@/types';
 import React from 'react';
 
-// SEO Metadata
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
@@ -19,7 +18,11 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   });
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: { id: string };
+}
+
+export default async function Page({ params }: PageProps): Promise<JSX.Element> {
   const blog = (await getBlogById(params.id)) as BlogPost;
 
   if (!blog) {
@@ -42,13 +45,10 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-10 bg-white rounded-xl shadow-sm font-vazir">
-      {/* Schema.org structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      {/* پست کامل */}
       <BlogDetail {...blog} />
     </section>
   );
