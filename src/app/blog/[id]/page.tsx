@@ -22,7 +22,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: blog.title,
     description: blog.content.slice(0, 150),
     images: blog.image
-      ? [{ image: blog.image, id: 'blog-image', productId: null }]
+      ? [{
+          image: blog.image,
+          id: 'blog-image',
+          productId: null,
+          cloudinaryId: null, // 👈 اضافه شده برای تطبیق با نوع مورد انتظار
+        }]
       : [],
   })
 }
