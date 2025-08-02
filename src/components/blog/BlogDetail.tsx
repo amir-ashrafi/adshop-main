@@ -6,8 +6,8 @@ export default function BlogDetail(post: BlogPost) {
       {post.image && (
         <div className="w-full h-72 mb-6 overflow-hidden rounded-xl">
           <Image
-          height={25}
-          width={25}
+          height={200}
+          width={200}
             src={post.image}
             alt={post.title}
             className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"

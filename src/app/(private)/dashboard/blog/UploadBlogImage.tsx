@@ -42,7 +42,7 @@ export default function UploadBlogImage({ blogId, image, setImage }: Props) {
         </Button>
       </div>
       {image && (
-        <Image height={32} width={40} src={image} alt="blog" className="mt-4 rounded-md w-40 h-32 object-cover" />
+        <Image height={100} width={100} src={image} alt="blog" className="mt-4 rounded-md w-40 h-32 object-cover" />
       )}
     </div>
   );

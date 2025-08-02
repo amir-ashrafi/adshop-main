@@ -1,17 +1,17 @@
 -- CreateEnum
-CREATE TYPE "ProductCategory" AS ENUM ('WATCH', 'MOBILE', 'AIRPODS', 'LAPTOP', 'COMPUTER', 'MONITOR', 'OTHERS');
+CREATE TYPE "public"."ProductCategory" AS ENUM ('WATCH', 'MOBILE', 'AIRPODS', 'LAPTOP', 'COMPUTER', 'MONITOR', 'OTHERS');
 
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED');
+CREATE TYPE "public"."OrderStatus" AS ENUM ('PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED');
 
 -- CreateTable
-CREATE TABLE "Product" (
+CREATE TABLE "public"."Product" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "description" TEXT,
     "price" DOUBLE PRECISION DEFAULT 0.0,
     "quantity" INTEGER DEFAULT 0,
-    "category" "ProductCategory" NOT NULL,
+    "category" "public"."ProductCategory" NOT NULL,
     "discount" DOUBLE PRECISION DEFAULT 0,
     "discountEndsAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -21,7 +21,7 @@ CREATE TABLE "Product" (
 );
 
 -- CreateTable
-CREATE TABLE "Image" (
+CREATE TABLE "public"."Image" (
     "id" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "productId" TEXT,
@@ -30,7 +30,7 @@ CREATE TABLE "Image" (
 );
 
 -- CreateTable
-CREATE TABLE "CartItem" (
+CREATE TABLE "public"."CartItem" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
@@ -40,11 +40,11 @@ CREATE TABLE "CartItem" (
 );
 
 -- CreateTable
-CREATE TABLE "Order" (
+CREATE TABLE "public"."Order" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "total" DOUBLE PRECISION NOT NULL,
-    "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
+    "status" "public"."OrderStatus" NOT NULL DEFAULT 'PENDING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -52,7 +52,7 @@ CREATE TABLE "Order" (
 );
 
 -- CreateTable
-CREATE TABLE "OrderItem" (
+CREATE TABLE "public"."OrderItem" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE "OrderItem" (
 );
 
 -- CreateTable
-CREATE TABLE "BlogPost" (
+CREATE TABLE "public"."BlogPost" (
     "id" TEXT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "content" TEXT NOT NULL,
@@ -76,13 +76,13 @@ CREATE TABLE "BlogPost" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Image" ADD CONSTRAINT "Image_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Image" ADD CONSTRAINT "Image_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CartItem" ADD CONSTRAINT "CartItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."CartItem" ADD CONSTRAINT "CartItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

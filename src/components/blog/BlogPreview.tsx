@@ -67,8 +67,8 @@ export default function BlogPreviewCarousel() {
                         <CardContent className="p-3 space-y-2">
                           {post.image && (
                             <Image
-                            width={25}
-                            height={25}
+                            width={100}
+                            height={100}
                               src={post.image}
                               alt={post.title}
                               className="w-full h-40 object-cover rounded"

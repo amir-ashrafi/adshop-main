@@ -77,8 +77,8 @@ export default async function BlogPage({ searchParams }: Props) {
               <Image
                 src={post.image}
                 alt={post.title}
-                width={400}
-                height={250}
+                width={200}
+                height={200}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
             )}

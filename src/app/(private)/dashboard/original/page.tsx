@@ -1,5 +1,5 @@
-import { cookies } from 'next/headers';
 import { UsersIcon, ShoppingCartIcon, DollarSignIcon, PackageIcon } from 'lucide-react';
+import { headers } from 'next/headers';
 
 import CartMenu from '@/components/menu/card';
 import ChartComponent from '@/components/menu/chart';
@@ -27,10 +27,10 @@ interface CustomerData {
 }
 
 async function getDashboardData() {
-  const cookieStore = cookies();
-  const cookieHeader = cookieStore.toString();
+    const headersList = await headers(); 
+  const cookieHeader = headersList.get('cookie') ?? '';
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = process.env.BASE_URL;
 
   if (!baseUrl) {
     throw new Error('NEXT_PUBLIC_BASE_URL is not defined');

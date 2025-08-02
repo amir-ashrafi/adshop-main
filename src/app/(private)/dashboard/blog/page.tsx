@@ -80,8 +80,8 @@ export default function DashboardBlogPage() {
         >
           {post.image && (
             <Image
-            height={25}
-            width={25}
+            height={100}
+            width={100}
               src={post.image}
               alt={post.title}
               className="w-full sm:w-32 sm:h-24 h-48 object-cover rounded"
