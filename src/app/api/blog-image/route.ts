@@ -1,24 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+// /app/api/blog-image/route.ts
+import { v2 as cloudinary } from 'cloudinary'
+import { NextRequest, NextResponse } from 'next/server'
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+})
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const file = formData.get('file') as File;
-  const blogId = formData.get('blogId') as string;
+  const formData = await req.formData()
+  const file = formData.get('file') as File
 
-  if (!file || !blogId) {
-    return NextResponse.json({ error: 'Missing file or blog id' }, { status: 400 });
+  if (!file) {
+    return NextResponse.json({ error: 'Missing file' }, { status: 400 })
   }
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  const bytes = await file.arrayBuffer()
+  const buffer = Buffer.from(bytes)
 
-  const uploadDir = path.join(process.cwd(), 'public/assets/blog', blogId);
-  await mkdir(uploadDir, { recursive: true });
-  const filePath = path.join(uploadDir, file.name);
-  await writeFile(filePath, buffer);
-  const fileUrl = `/assets/blog/${blogId}/${file.name}`;
+  try {
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({ folder: 'blogs' }, (err, result) => {
+          if (err || !result) return reject(err)
+          resolve(result)
+        })
+        .end(buffer)
+    })
 
-  return NextResponse.json({ message: 'File Uploaded Successfully', url: fileUrl });
-} 
+    return NextResponse.json({
+      message: 'File Uploaded to Cloudinary',
+      url: (result as any).secure_url,
+    })
+  }  catch (err) {
+  console.error('Upload error:', err);
+  return NextResponse.json({ error: 'Upload failed', details: String(err) }, { status: 500 });
+}
+}
