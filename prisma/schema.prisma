@@ -27,6 +27,7 @@ model Image {
   id        String   @id @default(uuid())
   image     String
   productId String?
+  cloudinaryId String?  
   Product   Product? @relation(fields: [productId], references: [id])
 }
 

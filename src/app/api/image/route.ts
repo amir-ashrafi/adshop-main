@@ -1,147 +1,111 @@
-//GET,POST,DELETE
+// /app/api/image/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import { promises as fs } from 'fs';
 import { prisma } from '@/lib/prisma';
+import { v2 as cloudinary } from 'cloudinary';
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
+
+// =============== POST ===============
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const file = formData.get('file') as File;
   const productId = formData.get('productId') as string;
 
   if (!file || !productId) {
-    return NextResponse.json(
-      {
-        error: 'Missing file or product id',
-      },
-      {
-        status: 400,
-      },
-    );
-  } else {
-    // save image to anywhere // local / DB / cloud service
+    return NextResponse.json({ error: 'Missing file or product id' }, { status: 400 });
+  }
 
-    // Read the file data as a buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
 
-    // Ensure the directory exists
-    const uploadDir = path.join(process.cwd(), 'public/assets', productId);
-    await mkdir(uploadDir, { recursive: true });
+  try {
+    const uploadResult = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({ folder: 'products' }, (error, result) => {
+          if (error || !result) return reject(error);
+          resolve(result);
+        })
+        .end(buffer);
+    });
 
-    // Define the file path
-    const filePath = path.join(uploadDir, file.name);
-
-    // Write file to disk
-    await writeFile(filePath, buffer);
-
-    // Construct the public URL
-    const fileUrl = `/assets/${productId}/${file.name}`;
-
-    // save to DB using prisma
+    const url = (uploadResult as any).secure_url;
+    const publicId = (uploadResult as any).public_id;
 
     const updatedProduct = await prisma.product.update({
       where: { id: productId },
       data: {
         images: {
-          create: { image: fileUrl },
+          create: {
+            image: url,
+            cloudinaryId: publicId, // ذخیره Cloudinary ID برای حذف بعدی
+          },
         },
       },
       include: { images: true },
     });
 
     return NextResponse.json({
-      message: 'File Uploaded Successfully',
-      data: updatedProduct?.images,
+      message: 'File uploaded to Cloudinary',
+      data: updatedProduct.images,
     });
+  } catch (error) {
+    console.error('Upload error:', error);
+    return NextResponse.json({ error: 'Cloudinary upload failed' }, { status: 500 });
   }
 }
 
+// =============== GET ===============
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const productId = searchParams.get('productId');
+
   if (!productId) {
-    return NextResponse.json(
-      {
-        error: 'Missing product id',
-      },
-      {
-        status: 400,
-      },
-    );
-  } else {
-    const images = await prisma.image.findMany({
-      where: { productId },
-    });
-    return NextResponse.json({
-      images,
-    });
-    // query string ?data=''
-    // get productImage
+    return NextResponse.json({ error: 'Missing product id' }, { status: 400 });
   }
+
+  const images = await prisma.image.findMany({ where: { productId } });
+
+  return NextResponse.json({ images });
 }
 
+// =============== DELETE ===============
 export async function DELETE(req: NextRequest) {
-  //delete image from DB
-  // delete image from local host
-
   const { searchParams } = new URL(req.url);
   const imageId = searchParams.get('imageId');
+
   if (!imageId) {
-    return NextResponse.json(
-      {
-        error: 'Missing image id',
-      },
-      {
-        status: 400,
-      },
-    );
+    return NextResponse.json({ error: 'Missing image id' }, { status: 400 });
   }
+
   const image = await prisma.image.findUnique({
-    where: {
-      id: imageId,
-    },
+    where: { id: imageId },
     include: { Product: true },
   });
 
   if (!image) {
-    return NextResponse.json(
-      {
-        error: 'invalid image id',
-      },
-      {
-        status: 400,
-      },
-    );
+    return NextResponse.json({ error: 'Invalid image id' }, { status: 404 });
   }
 
-  // Construct the file path from stored URL
-  const imagePath = path.join(process.cwd(), 'public', image.image);
+  try {
+    // حذف از Cloudinary
+    if (image.cloudinaryId) {
+      await cloudinary.uploader.destroy(image.cloudinaryId);
+    }
 
-  // Remove the image file from the filesystem
-try {
-  await fs.unlink(imagePath);
-} catch (fileError) {
-  // eslint-disable-next-line no-console
-  console.error('File deletion error:', fileError);
-  return NextResponse.json(
-    { error: 'File deletion failed' },
-    { status: 500 },
-  );
-}
+    // حذف از دیتابیس
+    await prisma.image.delete({ where: { id: imageId } });
 
-
-  await prisma.image.delete({ where: { id: imageId } });
-
-  return NextResponse.json(
-    {
+    return NextResponse.json({
       message: 'Image deleted successfully',
       data: image.productId,
-    },
-    {
-      status: 200,
-    },
-  );
+    });
+  } catch (error) {
+    console.error('Deletion error:', error);
+    return NextResponse.json({ error: 'Deletion failed' }, { status: 500 });
+  }
 }

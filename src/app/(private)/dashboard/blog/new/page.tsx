@@ -73,8 +73,8 @@ export default function NewBlogPostPage() {
         <Image
           src={image}
           alt="blog"
-          width={100}
-          height={100}
+          width={500}
+          height={500}
           className="mt-4 rounded-md w-48 h-32 object-cover border"
         />
       )}
