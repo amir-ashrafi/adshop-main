@@ -4,11 +4,15 @@ import BlogDetail from '@/components/blog/BlogDetail'
 import customMetadataGenerator from '@/lib/metadata'
 import { BlogPost } from '@/types'
 
-// generateMetadata
-export async function generateMetadata(
-  { params }: { params: { id: string } }
-): Promise<Metadata> {
-  const blog = (await getBlogById(params.id)) as BlogPost | null
+// هر دو متد پِیج (generateMetadata و default export) باید این Props را بگیرند
+type Props = {
+  params: Promise<{ id: string }>
+}
+
+// ۱) متد generateMetadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const blog = (await getBlogById(id)) as BlogPost | null
 
   if (!blog) {
     return customMetadataGenerator({ title: 'پست یافت نشد' })
@@ -23,11 +27,10 @@ export async function generateMetadata(
   })
 }
 
-// صفحه اصلی
-export default async function BlogPage(
-  { params }: { params: { id: string } }
-) {
-  const blog = (await getBlogById(params.id)) as BlogPost | null
+// ۲) خود صفحه
+export default async function BlogPage({ params }: Props) {
+  const { id } = await params
+  const blog = (await getBlogById(id)) as BlogPost | null
 
   if (!blog) {
     return (
