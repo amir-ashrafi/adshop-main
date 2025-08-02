@@ -6,12 +6,10 @@ import { BlogPost } from '@/types'
 
 // هر دو متد پِیج (generateMetadata و default export) باید این Props را بگیرند
 type Props = {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
-
-// ۱) متد generateMetadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params
+  const { id } = params
   const blog = (await getBlogById(id)) as BlogPost | null
 
   if (!blog) {
@@ -27,9 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   })
 }
 
-// ۲) خود صفحه
 export default async function BlogPage({ params }: Props) {
-  const { id } = await params
+  const { id } = params
   const blog = (await getBlogById(id)) as BlogPost | null
 
   if (!blog) {
