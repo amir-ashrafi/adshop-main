@@ -8,7 +8,7 @@ type ProductMetadata = {
   keywords?: string[];
   images?: Image[] | null;
 };
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const baseUrl = process.env.BASE_URL;
 
 export default function customMetadataGenerator({
   title = 'AshrafiTech ',
