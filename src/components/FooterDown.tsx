@@ -182,7 +182,7 @@ const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
             <div className='flex w-10/12 md:w-2/3 lg:w-1/2 justify-between h-28 space-x-6 border-2 border-t-0 p-5 shadow-border shadow-lg items-center rounded-xl'>
                 {NImage.map((item) =>(
                     <Link target='_blank' key={item.id} href={item.link}>
-                        <Image alt='image N' src={item.src} height={75} width={75} className='' />
+                        <Image alt='image N' src={item.src} height={500} width={500} className='size-16 md:size-20' />
                     </Link>
                 ))}
             </div>
