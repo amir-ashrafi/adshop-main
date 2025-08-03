@@ -14,7 +14,6 @@ type ClerkUser = {
   banned: boolean;
 };
 
-  const baseUrl = process.env.BASE_URL;
 
 export default function UsersPage() {
   const [users, setUsers] = useState<ClerkUser[]>([]);
@@ -23,7 +22,7 @@ export default function UsersPage() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const res = await fetch(`${baseUrl}/api/users`, { cache: "no-store" });
+        const res = await fetch(`/api/users`, { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to fetch users");
         const data = await res.json();
         setUsers(data.users || []);
