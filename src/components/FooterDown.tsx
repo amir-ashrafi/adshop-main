@@ -128,7 +128,7 @@ const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
             </Link>
             <div className="flex items-center gap-3 h-12">
                 <Link href="/" className="font-bold text-2xl text-white">
-                  اشرفی‌تک
+                  اِی‌دی‌شاپ
                 </Link>
                 <MonitorSmartphone className='text-white' />
             </div>

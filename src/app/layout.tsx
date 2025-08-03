@@ -10,8 +10,8 @@ import CartDropdown from '@/components/cart';
 import samimFont from '@/app/samimFont';
 import { faIR } from '@clerk/localizations'
 export const metadata: Metadata = {
-  title: 'AshrafiTech',
-  description: 'AshrafiTech to buy digital stuff',
+  title: 'ADShop',
+  description: 'Ashrafi Digital Shop to buy digital stuff',
 };
 
 export interface RootLayoutProps {
@@ -50,7 +50,7 @@ export default function RootLayout({
                 </div>
                 <div className="flex items-center gap-3 h-12">
                   <Link href="/" className="font-bold text-2xl ">
-                    اشرفی‌تک
+                    اِی‌دی‌شاپ
                   </Link>
                   <MonitorSmartphone />
                 </div>
