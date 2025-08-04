@@ -30,9 +30,9 @@ const ProductTable = (props: {
     <div className="border border-gray-200 rounded-lg shadow-md mt-4 ">
       <div className="flex justify-between items-center p-4 bg-gray-100">
         <h1 className="text-xl font-semibold">Products</h1>
-        <Button asChild>
+        <Button asChild className='bg-blue-600 hover:bg-blue-800 w-28 sm:w-auto'>
           <Link href="/dashboard/products/new">
-            Add New Product
+            New Product
             <PlusCircle />
           </Link>
         </Button>

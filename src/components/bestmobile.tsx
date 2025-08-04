@@ -21,7 +21,7 @@ function Bestmobile() {
                 <div className="w-24 h-20 md:w-40 md:h-40   overflow-hidden rounded-full bg-white shadow-md flex items-center justify-center mb-2">
                   <Image src={company.img} alt={company.name} width={150} height={150} className="object-contain rounded-full w-full p-2 border-2 duration-500 border-white hover:border-sky-500 h-full" />
                 </div>
-                <span className="text-sm font-medium mt-1">{company.name}</span>
+                <span className="text-xs sm:text-sm md:text-base text-center text-gray-700">{company.name}</span>
               </Link>
             ))}
           </div>

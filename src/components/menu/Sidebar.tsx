@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Button } from '../ui'
 import Link from 'next/link'
-import { Menu, LayoutDashboard, UserRound, ShoppingCart, ListOrdered, BookOpen } from 'lucide-react';
+import { Menu, LayoutDashboard, UserRound, ShoppingCart, ListOrdered, BookOpen, Store } from 'lucide-react';
 const Sidebar = () => {
   const [showBox,setShowBox] = useState(false)
   function onclick(){
@@ -40,15 +40,18 @@ const Sidebar = () => {
         url: "/dashboard/blog",
         icon: <BookOpen />
       },
-
+      {
+        id: 5,
+        name: "فروشگاه",
+        url: "/",
+        icon: <Store />
+      },
     ]
     
   return (
     <>
     <div className='relative flex justify-center'>
-
-    
-        <Button onClick={onclick} variant="outline" className="flex fixed top-6 p-2 md:p-4 ml-16 z-50"><Menu /></Button>
+        <Button onClick={onclick} variant="outline" className="flex fixed top-6 p-4 border-blue-500 hover:bg-blue-600 hover:text-white  md:p-4 right-3 z-50"><Menu /></Button>
         {showBox && 
         <div onClick={onclick} className="w-full fixed top-0 min-h-screen  bg-black/30 z-10 flex items-center justify-center">
           <div className="absolute bg-slate-100  flex-col rounded-2xl w-48 md:w-60 lg:w-80">
@@ -64,7 +67,5 @@ const Sidebar = () => {
     </>
   )
 }
-{/* <Button asChild className="mt-6">
-        <Link href="/user">Go to user</Link>
-      </Button> */}
+
 export default Sidebar

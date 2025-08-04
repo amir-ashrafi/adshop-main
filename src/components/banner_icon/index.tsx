@@ -86,7 +86,7 @@ function CarouselSpacing() {
                   </CardContent>
                 </Card>
               </div>
-              <span className="">{image.type}</span> 
+              <span className="text-xs sm:text-sm md:text-base text-center text-gray-700">{image.type}</span> 
             </CarouselItem>
           );
         })}

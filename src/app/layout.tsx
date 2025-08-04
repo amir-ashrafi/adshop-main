@@ -9,6 +9,7 @@ import ReactQueryProvider from '@/providers/ReactQuery';
 import CartDropdown from '@/components/cart';
 import samimFont from '@/app/samimFont';
 import { faIR } from '@clerk/localizations'
+import BackButton from '@/components/back';
 export const metadata: Metadata = {
   title: 'ADShop',
   description: 'Ashrafi Digital Shop to buy digital stuff',
@@ -39,12 +40,14 @@ export default function RootLayout({
     >
       <ReactQueryProvider>
         <html lang="en">
+          
           <body
-            className={` ${samimFont.variable} font-samim antialiased leading-8 overflow-x-hidden`}
+            className={` ${samimFont.variable} font-samim antialiased leading-8 overflow-x-hidden w-full`}
           >
             <main className="flex flex-col min-h-screen ">
               <header className="fixed flex justify-between items-center shadow-xl bg-white px-8 w-full h-20 z-40">
                 <div className="flex items-center gap-2">
+                  <BackButton />
                   <CartDropdown />
                   <Auth />
                 </div>
@@ -61,9 +64,10 @@ export default function RootLayout({
                 <Toaster />
               </div>
               
-              <footer className="bg-blue-600/40 font-bold fixed w-full bottom-0 left-0 text-white flex items-center justify-center h-10">
-                <p>
-                تمامی حقوق مادی و معنوی این سایت متعلق به امیررضا اشرفی می‌باشد.</p>
+              <footer className="bg-blue-600/40 font-bold fixed w-full bottom-0 left-0 text-white flex items-center justify-center h-auto sm:h-10">
+                <p className='text-xs sm:text-sm md:text-base text-right text-white p-3'>
+                تمامی حقوق مادی و معنوی این سایت متعلق به امیررضا اشرفی می‌باشد.
+                </p>
               </footer>
             </main>
           </body>

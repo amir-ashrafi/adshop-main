@@ -13,14 +13,13 @@ import {
 import Image from 'next/image'
 
 import IMG1 from './image/1.webp'
-import IMG2 from './image/2.webp'
+import IMG2 from './image/1.gif'
 import IMG3 from './image/3.webp'
-import IMG4 from './image/4.webp'
+import IMG4 from './image/3.gif'
 import IMG5 from './image/5.webp'
 import IMG6 from './image/6.webp'
-import IMG7 from './image/7.webp'
-import IMG8 from './image/1.gif'
-const IMAGES = [IMG1, IMG2, IMG3, IMG4,IMG5,IMG6,IMG7,IMG8]
+import IMG7 from './image/4.webp'
+const IMAGES = [IMG1, IMG2, IMG3, IMG4,IMG5,IMG6,IMG7]
 
 export default function Banner() {
   const emblaRef = React.useRef<any>(null)

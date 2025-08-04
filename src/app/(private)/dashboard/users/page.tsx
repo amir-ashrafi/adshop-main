@@ -103,7 +103,7 @@ export default function UsersPage() {
 ) : (
         <div className="grid gap-4">
           {users.map(({ id, email, firstName, lastName, role, banned }) => (
-            <Card key={id} className="flex items-center justify-between p-4">
+            <Card key={id} className="flex flex-col sm:flex-row items-center justify-between p-4">
               <div>
                 <p className="font-semibold">{email}</p>
                 <p className="text-sm text-gray-500">

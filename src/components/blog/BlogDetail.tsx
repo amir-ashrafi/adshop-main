@@ -2,7 +2,7 @@ import { BlogPost } from '@/types';
 import Image from 'next/image';
 export default function BlogDetail(post: BlogPost) {
   return (
-    <article className="max-w-3xl mx-auto py-4 px-4 bg-white rounded-xl shadow-sm">
+    <article className="max-w-3xl text-right mx-auto py-4 px-4 bg-white rounded-xl shadow-sm">
       {post.image && (
         <div className="w-full h-72 mb-6 overflow-hidden rounded-xl">
           <Image
