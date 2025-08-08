@@ -101,15 +101,20 @@ export default function UsersPage() {
 ) : users.length === 0 ? (
   <p className="text-gray-500">کاربری یافت نشد.</p>
 ) : (
-        <div className="grid gap-4">
+        <div className="grid  gap-4">
           {users.map(({ id, email, firstName, lastName, role, banned }) => (
-            <Card key={id} className="flex flex-col sm:flex-row items-center justify-between p-4">
-              <div>
-                <p className="font-semibold">{email}</p>
-                <p className="text-sm text-gray-500">
-                  {firstName} {lastName} | نقش: {role}
-                  {banned && <span className="ml-2 text-red-500">(بن شده)</span>}
+            <Card key={id} className="flex flex-col sm:flex-row items-center justify-between px-4 py-2">
+              <div className="flex flex-col space-y-0">
+                <p className="">
+                  <span className="text-xs pr-4"> نقش: {role=="admin"?'ادمین':'کاربر'}</span>
+                  ||
+                  <span className="text-black pl-4">{firstName} {lastName}</span>
                 </p>
+                <span className="font-semibold text-slate-500">{email}</span>
+                
+                <span className="text-sm text-gray-500">
+                  {banned && <span className="ml-2 text-red-500">(بن شده)</span>}
+                </span>
               </div>
 
               <div className="flex flex-wrap gap-2">

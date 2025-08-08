@@ -2,14 +2,15 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { MonitorSmartphone } from 'lucide-react';
 import Link from 'next/link';
+import '../app/font/font.css'
 import { Toaster } from '@/components/ui/sonner';
 import { ClerkProvider } from '@clerk/nextjs';
 import Auth from '@/components/auth';
 import ReactQueryProvider from '@/providers/ReactQuery';
 import CartDropdown from '@/components/cart';
-import samimFont from '@/app/samimFont';
 import { faIR } from '@clerk/localizations'
 import BackButton from '@/components/back';
+
 export const metadata: Metadata = {
   title: 'ADShop',
   description: 'Ashrafi Digital Shop to buy digital stuff',
@@ -39,10 +40,10 @@ export default function RootLayout({
       }}
     >
       <ReactQueryProvider>
-        <html lang="en">
+        <html lang="en" >
           
           <body
-            className={` ${samimFont.variable} font-samim antialiased leading-8 overflow-x-hidden w-full`}
+            className={` font-vazir antialiased leading-8 overflow-x-hidden w-full`}
           >
             <main className="flex flex-col min-h-screen ">
               <header className="fixed flex justify-between items-center shadow-xl bg-white px-8 w-full h-20 z-40">

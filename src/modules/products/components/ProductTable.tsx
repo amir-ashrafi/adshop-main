@@ -22,32 +22,37 @@ const ProductTable = (props: {
   const { products } = props;
 
   const onDeleteProduct = (id: string) => {
-    //delete
     deleteProduct(id);
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg shadow-md mt-4 ">
+    <div className="border border-gray-200 rounded-lg shadow-md mt-4">
       <div className="flex justify-between items-center p-4 bg-gray-100">
-        <h1 className="text-xl font-semibold">Products</h1>
-        <Button asChild className='bg-blue-600 hover:bg-blue-800 w-28 sm:w-auto'>
+        <h1 className="text-xl font-semibold">محصولات</h1>
+        <Button
+          asChild
+          variant="outline"
+          className="group flex justify-between items-center py-5 border-2 border-white border-b-slate-500 hover:border-white duration-500 hover:bg-black hover:text-white w-28 sm:w-auto"
+        >
           <Link href="/dashboard/products/new">
-            New Product
+            افزودن محصول
             <PlusCircle />
           </Link>
         </Button>
       </div>
+
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead className="text-center">Category</TableHead>
-            <TableHead className="text-center">Price</TableHead>
-            <TableHead className="text-center">Quantity</TableHead>
-            <TableHead className="text-center">Image</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
+            <TableHead>نام</TableHead>
+            <TableHead className="text-center">دسته‌بندی</TableHead>
+            <TableHead className="text-center">قیمت</TableHead>
+            <TableHead className="text-center">موجودی</TableHead>
+            <TableHead className="text-center">تصویر</TableHead>
+            <TableHead className="text-center">عملیات</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {products.map((product: any) => (
             <TableRow key={product.id}>
@@ -56,13 +61,13 @@ const ProductTable = (props: {
               <TableCell className="text-center">{product.price}</TableCell>
               <TableCell className="text-center">{product.quantity}</TableCell>
               <TableCell className="text-center">
-              <Image
-  src={product.images?.[0]?.image || '/assets/noImage.jpg'}
-  alt={product.name || 'محصول'}
-  width={50}
-  height={50}
-  className="rounded-full m-auto"
-/>
+                <Image
+                  src={product.images?.[0]?.image || '/assets/noImage.jpg'}
+                  alt={product.name || 'محصول'}
+                  width={50}
+                  height={50}
+                  className="rounded-full m-auto"
+                />
               </TableCell>
               <TableCell className="text-center">
                 <div className="flex justify-center gap-2 items-center">
@@ -72,10 +77,8 @@ const ProductTable = (props: {
                     </Link>
                   </Button>
                   <Button
-                    variant="ghost"
-                    onClick={() => {
-                      onDeleteProduct(product.id);
-                    }}
+                    variant="destructive"
+                    onClick={() => onDeleteProduct(product.id)}
                   >
                     <Trash2 />
                   </Button>
@@ -84,9 +87,10 @@ const ProductTable = (props: {
             </TableRow>
           ))}
         </TableBody>
+
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell colSpan={5}>تعداد کل</TableCell>
             <TableCell className="text-right">{products.length}</TableCell>
           </TableRow>
         </TableFooter>
@@ -94,4 +98,5 @@ const ProductTable = (props: {
     </div>
   );
 };
+
 export default ProductTable;

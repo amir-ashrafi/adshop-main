@@ -32,11 +32,11 @@ export default function UploadBlogImage({ blogId, image, setImage }: Props) {
   };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-3">
       
-      <Label className='flex justify-center text-white' htmlFor="blog-image">تصویر بلاگ</Label>
+      <Label className='flex justify-end text-white' htmlFor="blog-image">تصویر بلاگ</Label>
       <div className="flex gap-2 w-full justify-between">
-        <Input className='bg-white/90  focus:bg-white' id="blog-image" type="file" accept="image/*" onChange={handleChangeFile} />
+        <Input className='bg-white/90  focus:bg-white text-black ' id="blog-image" type="file" accept="image/*" onChange={handleChangeFile} />
         <Button className='bg-white text-black hover:text-black hover:bg-white/90' type="button" onClick={handleUpload} disabled={loading || !file}>
           {loading ? 'در حال آپلود...' : 'آپلود تصویر'}
         </Button>

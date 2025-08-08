@@ -70,7 +70,7 @@ const Discounts: React.FC = () => {
               : discountProducts.map((product, index) => (
                   <CarouselItem
                     key={index}
-                    className="!basis-1/2 sm:!basis-1/12 lg:!basis-1/12 sm:max-w-[320px] sm:min-w-[240px] flex justify-start sm:justify-center sm:mr-10   m-0 p-0"
+                    className="basis-3/5 sm:basis-1/6 space-x-4 lg:!basis-1/12 max-w-[300px] min-w-[240px] sm:max-w-[320px] sm:min-w-[240px] flex justify-start sm:justify-center sm:mr-10   m-0 p-0"
                   >
                     <ProductItem product={product} />
                   </CarouselItem>

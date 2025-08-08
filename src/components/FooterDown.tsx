@@ -122,7 +122,7 @@ const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
 
   return (
     <div className='bg-gradient-to-br relative from-blue-900 via-blue-700 to-blue-400 flex justify-center flex-col py-5 rounded-t-3xl'>
-        <div className='w-full  flex justify-between gap-10 items-center shadow-md shadow-border px-6 rounded-lg border-none  border-b-2 border-white pb-3'>
+        <div className='w-full  flex justify-between gap-10 items-center shadow-sm shadow-border px-6 rounded-lg border-none  border-b-2 pb-3'>
             <Link href="" className='basis-1/2 my-7 w-full sm:w-48 sm:basis-auto'>
                 <Button className='bg-white w-full text-black font-bold hover:bg-white'>بازگشت به بالا</Button>
             </Link>
@@ -133,7 +133,7 @@ const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
                 <MonitorSmartphone className='text-white' />
             </div>
         </div>
-        <div  className='text-white px-7 relative py-9 flex flex-col w-full sm:items-end items-center font-bold text-right shadow-border shadow-md rounded-lg border-b-2 '>
+        <div  className='text-white px-7 relative py-9 flex flex-col w-full sm:items-end items-center font-bold text-right shadow-border shadow-sm rounded-lg border-b-0 '>
         <div className='hidden md:block lg:left-1/4 absolute z-10 left-10 top-9'>
   <h1 className='translate-x-6 mb-4'>دسترسی سریع</h1>
   <div className='flex flex-row gap-6 lg:gap-10'>
@@ -175,11 +175,11 @@ const columns = Array.from({ length: itemsPerColumn }, (_, rowIndex) =>
                 <h3>ایمیل</h3>
             </div>
         </div>
-        <div className='flex flex-col justify-center items-center text-right text-white py-10 font-bold w-full mt-10 lg:mt-12'>
+        <div className='flex flex-col justify-center items-center text-right text-white pb-10 font-bold w-full mt-10 lg:mt-12'>
 
-            <h2 className='lg:mx-auto text-xl py-5'>اعتماد شما دارایی ماست</h2>
+            <h2 className='lg:mx-auto text-xl pb-5'>اعتماد شما دارایی ماست</h2>
             
-            <div className='flex w-10/12 md:w-2/3 lg:w-1/2 justify-between h-28 space-x-6 border-2 border-t-0 p-5 shadow-border shadow-lg items-center rounded-xl'>
+            <div className='flex w-10/12 flex-wrap justify-center gap-8 md:justify-around border-2 bg-white border-t-0 p-5 shadow-border shadow-md items-center rounded-xl'>
                 {NImage.map((item) =>(
                     <Link target='_blank' key={item.id} href={item.link}>
                         <Image alt='image N' src={item.src} height={500} width={500} className='size-16 md:size-20' />

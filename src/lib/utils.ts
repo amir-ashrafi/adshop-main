@@ -21,3 +21,12 @@ export function getDiscountedPrice(price: number | null, discount: number | null
   const effectiveDiscount = getEffectiveDiscount(discount, discountEndsAt);
   return price - (price * effectiveDiscount) / 100;
 }
+
+export function toPersianDigits(input: number | string): string {
+  const englishDigits = input.toString();
+  const withThousandsSeparator = englishDigits.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const persianDigits = withThousandsSeparator.replace(/\d/g, (digit) =>
+    '۰۱۲۳۴۵۶۷۸۹'[parseInt(digit)]
+  );
+  return persianDigits;
+}

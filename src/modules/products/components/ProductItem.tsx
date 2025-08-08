@@ -9,6 +9,7 @@ import {
   isDiscountValid,
   getEffectiveDiscount,
   getDiscountedPrice,
+  toPersianDigits
 } from '@/lib/utils';
 
 const ProductItem = ({ product }: { product: ProductType }) => {
@@ -48,9 +49,12 @@ const ProductItem = ({ product }: { product: ProductType }) => {
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const pad = (num: number) => num.toString().padStart(2, '0');
+      const result =
+    (days > 0 ? `${days} ^` : '') +
+    `${pad(hours)}:${pad(minutes)}:${pad(seconds)}^`;
 
-      const result = (days > 0 ? `${days} روز ` : '') + `${hours}:${minutes}:${seconds}`;
-      setTimeLeft(result);
+  setTimeLeft(toPersianDigits(result));
     };
 
     const timer = setInterval(updateCountdown, 1000);
@@ -61,10 +65,10 @@ const ProductItem = ({ product }: { product: ProductType }) => {
 
   return (
     <Link href={`/products/${id}`}>
-      <Card className={`${hasValidDiscount?'':'pt-5'} w-full sm:w-[240px] h-80 flex flex-col rounded-xl overflow-hidden shadow hover:shadow-lg transition-all duration-300 hover:scale-105 font-vazir bg-white`}>
+      <Card className={`${hasValidDiscount ? '' : 'pt-5'}text-right w-full sm:w-[240px] h-80 flex flex-col rounded-xl overflow-hidden shadow hover:shadow-lg transition-all duration-300 hover:scale-105 font-vazir bg-white`}>
         {hasValidDiscount && (
-          <div className="bg-red-100 text-red-700 text-xs font-bold px-3 py-2 flex justify-between items-center">
-            <span>⏰ {timeLeft}</span>
+          <div className="bg-red-100  text-red-700 text-xs font-bold px-3 py-2 flex justify-between items-center">
+            <span>⏰{toPersianDigits(timeLeft)}</span>
             <span className="ml-2">ای دی اف</span>
           </div>
         )}
@@ -85,33 +89,31 @@ const ProductItem = ({ product }: { product: ProductType }) => {
           <h3 className="text-sm font-semibold mb-1 text-gray-800 line-clamp-1">{name}</h3>
 
           {hasValidDiscount ? (
-            <div className="flex justify-around  gap-1 items-center">
-              <div className='flex flex-col '>
+            <div className="flex justify-around gap-1 items-center">
+              <div className='flex flex-col'>
                 <span className="text-lg font-bold text-green-600">
-                    ${discountedPrice.toFixed(2)}
+                  {toPersianDigits(discountedPrice.toFixed(2))} تومان
                 </span>
                 <span className="line-through text-sm text-gray-400">
-                ${basePrice.toFixed(2)}
-              </span>
+                  {toPersianDigits(basePrice.toFixed(2))} تومان
+                </span>
               </div>
-              
-              <span className="text-xs text-red-500 font-bold bg-red-100 px-2 py-0.5 rounded">
-                {effectiveDiscount}% 
-              </span>
 
+              <span className="text-xs text-red-500 font-bold bg-red-100 px-2 py-0.5 rounded">
+                {toPersianDigits(effectiveDiscount)}٪
+              </span>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
-  {description && (
-    <p className="text-xs text-gray-500 line-clamp-1 leading-5">
-      {description}
-    </p>
-  )}
-  <span className="text-lg font-medium text-gray-800">
-    {basePrice > 0 ? `$${basePrice.toFixed(2)}` : 'قیمت نامشخص'}
-  </span>
-</div>
-
+              {description && (
+                <p className="text-xs text-gray-500 line-clamp-1 leading-5">
+                  {description}
+                </p>
+              )}
+              <span className="text-lg font-medium text-gray-800">
+                {basePrice > 0 ? `${toPersianDigits(basePrice.toFixed(2))} تومان` : 'قیمت نامشخص'}
+              </span>
+            </div>
           )}
         </CardContent>
       </Card>

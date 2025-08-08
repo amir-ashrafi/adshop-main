@@ -6,11 +6,13 @@ import { Button } from '@/components/ui';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { ProductsWithImages } from '@/types';
+
 import { useCart } from '@/hooks/useCart';
 import {
   isDiscountValid,
   getEffectiveDiscount,
   getDiscountedPrice,
+  toPersianDigits
 } from '@/lib/utils';
 
 export default function ProductDetail({
@@ -61,41 +63,53 @@ export default function ProductDetail({
             </div>
 
             <div className="flex flex-col gap-4 justify-between">
+              <p className="text-sm text-gray-500 text-right">
+                دسته‌بندی: {category=="AIRPODS"?'ایرپاد':category=='COMPUTER'?'کامپیوتر':category=='LAPTOP'?'لپتاب':category=='MOBILE'?'موبایل':category=='MONITOR'?'مانیتور':category=='WATCH'?'ساعت' : 'دیگر'}
+              </p>
+              <p className="text-sm text-gray-600 text-right">تعداد موجود: {toPersianDigits(quantity??0)}</p>
+
+              <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p className="text-sm text-gray-700 leading-relaxed space-y-2">
+                  <span className="block mb-1 font-semibold text-gray-800">ویژگی‌ها:</span>
+                  <span
+                    className="block whitespace-pre-line font-mono text-left break-words"
+                    dir="ltr"
+                  >
+                    {description || 'No description provided.'}
+                  </span>
+                </p>
+              </div>
               {hasValidDiscount ? (
-                <div className="space-y-2 text-right">
-                  <p className="text-2xl font-bold text-green-600">
-                    ${discountedPrice.toFixed(2)} 
+                <div className="space-y-2 justify-around items-center flex text-right">
+                  
+                  <div className='flex flex-col'>
+                    <p className="text-2xl font-bold text-green-600">
+                    {toPersianDigits(discountedPrice.toFixed(2))} تومان
                   </p>
                   <p className="text-lg line-through text-gray-400">
-                    ${safePrice.toFixed(2)} 
+                   {toPersianDigits(safePrice.toFixed(2))} تومان
                   </p>
-                  <span className="inline-block bg-red-500 text-white px-3 py-1 rounded text-sm font-bold">
-                    {effectiveDiscount}٪ تخفیف
+                  </div>
+                  <span className=" bg-red-500 text-white px-3 py-1 rounded text-sm font-bold">
+                    {toPersianDigits(effectiveDiscount)}٪ تخفیف
                   </span>
                 </div>
               ) : (
                 <p className="text-2xl font-semibold text-gray-800 text-right">
-                  ${safePrice.toFixed(2)} 
+                  {toPersianDigits(safePrice.toFixed(2))} تومان
                 </p>
               )}
 
-              <p className="text-sm text-gray-600 text-right">تعداد موجود: {quantity}</p>
-              <p className="text-sm text-gray-500 text-right">
-                دسته‌بندی: {category ?? 'نامشخص'}
-              </p>
 
-              <p className="text-sm text-gray-700 text-right leading-relaxed line-clamp-5">
-                {description || 'توضیحاتی برای این محصول ثبت نشده است.'}
-              </p>
 
-              <div className="flex flex-col sm:flex-row-reverse gap-3 mt-4">
+              <div className="flex flex-col sm:flex-row-reverse sm:justify-center gap-3 mt-4">
+                
                 <Button
-                  className="w-full sm:w-auto"
+                  variant="destructive"
                   onClick={() => addToCartMutation.mutate(id)}
                   disabled={isLoading}
-                >
+                ><ShoppingCart className="mr-2 w-5 h-5" />
                   {isLoading ? 'در حال افزودن...' : 'افزودن به سبد خرید'}
-                  <ShoppingCart className="mr-2 w-5 h-5" />
                 </Button>
 
                 <Button variant="secondary" asChild className="w-full sm:w-auto">

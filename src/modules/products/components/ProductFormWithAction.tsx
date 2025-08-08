@@ -65,8 +65,8 @@ useEffect(() => {
 
 
   return (
-    <main className=" flex py-6 justify-center bg-white bg-muted ">
-  <Card className="w-full max-w-2xl shadow-2xl border-none bg-gradient-to-br shadow-background from-blue-500 via-indigo-600 to-purple-600 text-white">
+    <main className=" flex py-6 justify-center bg-white/5 ">
+  <Card className="w-full max-w-2xl shadow-2xl border-none bg-gradient-to-br shadow-background from-black  to-blue-800 text-white">
     <form className="w-full" action={handleSubmit}>
       <input type="hidden" name="id" value={product?.id || ''} />
       
@@ -79,25 +79,25 @@ useEffect(() => {
 
       <CardContent className="grid gap-4">
         <div className='space-y-3'>
-          <Label htmlFor="name" className='w-full flex justify-center'>نام محصول</Label>
-          <Input className='focus:bg-white bg-white/90 text-black' name="name" id="name" defaultValue={data?.name || ''} />
+          <Label htmlFor="name" className='w-full flex justify-end'>نام محصول</Label>
+          <Input className='focus:bg-white bg-white/90 text-black text-right justify-end' name="name" id="name" defaultValue={data?.name || ''} />
           {error?.name && <p className="text-red-200  text-sm mt-1">{error.name}</p>}
         </div>
 
         <div className='space-y-3'>
-          <Label htmlFor="category" className='w-full flex justify-center'>دسته‌بندی</Label>
+          <Label htmlFor="category" className='w-full flex justify-end'>دسته‌بندی</Label>
           <Select
             name="category"
             defaultValue={data?.category || ProductCategory.OTHERS}
             
           >
-            <SelectTrigger className="focus:bg-white bg-white/90 text-black">
+            <SelectTrigger className="focus:bg-white justify-end bg-white/90 text-black">
               <SelectValue placeholder="انتخاب دسته‌بندی" />
             </SelectTrigger>
             <SelectContent>
               {Object.values(ProductCategory).map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
+                <SelectItem className='flex justify-end' key={cat} value={cat}>
+                  {cat=='AIRPODS'?'ایرپاد':cat=='COMPUTER'?'کامپیوتر':cat=='LAPTOP'?'لپتاب':cat=='MOBILE'?'موبایل':cat=='MONITOR'?'مانیتور':cat=='OTHERS'?'دیگر':cat=='WATCH'?'ساعت هوشمند':'نامعلوم'}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -105,18 +105,18 @@ useEffect(() => {
         </div>
 
         <div className='space-y-3'>
-          <Label htmlFor="description" className='w-full flex justify-center'>توضیحات</Label>
+          <Label htmlFor="description" className='w-full flex justify-end'>توضیحات</Label>
           <Textarea
             name="description"
             id="description"
             defaultValue={data?.description || ''}
-            className="focus:bg-white bg-white/90 text-black"
+            className="focus:bg-white bg-white/90 text-black w-full text-right flex justify-end "
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className='space-y-3'>
-            <Label className='w-full flex justify-center' htmlFor="price">قیمت</Label>
+            <Label className='w-full flex justify-end' htmlFor="price">قیمت</Label>
             <Input
               name="price"
               type="number"
@@ -131,7 +131,7 @@ useEffect(() => {
           </div>
 
           <div className='space-y-3'>
-            <Label className='w-full flex justify-center' htmlFor="quantity">تعداد موجود</Label>
+            <Label className='w-full flex justify-end' htmlFor="quantity">تعداد موجود</Label>
             <Input
               name="quantity"
               type="number"
@@ -147,7 +147,7 @@ useEffect(() => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className='space-y-3'>
-            <Label className='w-full flex justify-center' htmlFor="discount">تخفیف (%)</Label>
+            <Label className='w-full flex justify-end' htmlFor="discount">تخفیف (%)</Label>
             <Input
               name="discount"
               type="number"
@@ -164,7 +164,7 @@ useEffect(() => {
           </div>
 
           <div className='space-y-3'>
-            <Label className='w-full flex justify-center' htmlFor="discountEndsAt">پایان تخفیف</Label>
+            <Label className='w-full flex justify-end' htmlFor="discountEndsAt">پایان تخفیف</Label>
             <Input
               type="datetime-local"
               id="discountEndsAt"
@@ -185,11 +185,13 @@ useEffect(() => {
         </div>
       </CardContent>
 
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild className="bg-white text-black">
+      <CardFooter className="flex justify-around">
+        <Button variant="outline" asChild className="bg-white py-5 text-black">
           <Link href="/dashboard/products">بازگشت</Link>
         </Button>
-        <Button  type="submit" disabled={isPending}>
+        <Button 
+        variant="outline"
+        className="py-5 text-black border-2 border-white border-b-slate-500 hover:border-white duration-500 hover:bg-black hover:text-white w-28 sm:w-auto" type="submit" disabled={isPending}>
           {isPending
             ? 'در حال ذخیره...'
             : product?.id

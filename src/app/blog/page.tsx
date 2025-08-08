@@ -40,7 +40,7 @@ export default async function BlogPage({ searchParams }: Props) {
   });
 
   return (
-    <main className="max-w-6xl w-full mx-auto py-10 my-5 px-4">
+    <main className="max-w-6xl w-full mx-auto py-10 my-5 px-4 text-right">
       <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
         وبلاگ اشرفی تک
       </h1>
@@ -86,8 +86,11 @@ export default async function BlogPage({ searchParams }: Props) {
               <h2 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-blue-700 transition-colors duration-200">
                 {post.title}
               </h2>
-              <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                {post.content.slice(0, 120)}...
+              <p className="text-sm text-right rtl text-gray-600 mb-3 leading-relaxed">
+                <span dir="rtl">
+                  {post.content.slice(0, 130)}
+                  <span dir="ltr">…</span>
+                </span>
               </p>
               <span className="text-xs text-gray-400">
                 {new Date(post.createdAt).toLocaleDateString('fa-IR')}

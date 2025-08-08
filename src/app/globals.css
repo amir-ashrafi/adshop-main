@@ -1,16 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@font-face {
-  font-family: Tecno;
-  src: url('/Samim.ttf');
-}
-body {
-  font-family: 'Tecno';
-}
+
 .clerk-powered-by {
   display: none !important;
 }
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -75,6 +70,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
 .amazing-offer-title {
   font-family: 'Vazirmatn', 'Tahoma', sans-serif;
   font-size: 1.5rem;

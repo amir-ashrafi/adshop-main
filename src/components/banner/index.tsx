@@ -26,12 +26,11 @@ export default function Banner() {
   const [emblaApi, setEmblaApi] = React.useState<any>(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
 
-  // پلاگین autoplay
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })
   )
 
-  // وقتی embla آماده شد، رویداد select رو وصل کن
+
   React.useEffect(() => {
     if (!emblaApi) return
 
@@ -40,7 +39,7 @@ export default function Banner() {
     }
 
     emblaApi.on('select', onSelect)
-    onSelect() // مقدار اولیه
+    onSelect() 
 
     return () => {
       emblaApi.off('select', onSelect)
@@ -51,8 +50,9 @@ export default function Banner() {
     <div className="w-full flex flex-col group mx-auto relative overflow-hidden">
       <Carousel className="relative flex-none" plugins={[autoplayPlugin.current]}
         opts={{
-          align: 'start',
-        }}
+    align: 'start',
+    loop: true,
+  }}
         setApi={setEmblaApi} ref={emblaRef}>
         <CarouselContent>
           {IMAGES.map((image, index) => (

@@ -2,7 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+
 interface ApiOrder {
   id: string;
   userId: string;
@@ -35,13 +48,14 @@ const OrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('/api/dashboard/orders');
-        if (response.ok) {
-          const apiOrders: ApiOrder[] = await response.json();
+        const res = await fetch('/api/dashboard/orders');
+        if (res.ok) {
+          const apiOrders: ApiOrder[] = await res.json();
           setOrders(apiOrders);
         }
-      } catch {}
-      finally {
+      } catch (error) {
+        toast.error('خطا در دریافت سفارشات');
+      } finally {
         setLoading(false);
       }
     };
@@ -55,8 +69,11 @@ const OrdersPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: orderId, status: newStatus }),
       });
+
       if (res.ok) {
-        setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: newStatus } : o));
+        setOrders((prev) =>
+          prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+        );
         toast.success('وضعیت سفارش با موفقیت تغییر کرد');
       } else {
         toast.error('خطا در تغییر وضعیت سفارش');
@@ -67,122 +84,140 @@ const OrdersPage = () => {
   };
 
   const totalPages = Math.ceil(orders.length / ordersPerPage);
-  const paginatedOrders = orders.slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
+  const paginatedOrders = orders.slice(
+    (currentPage - 1) * ordersPerPage,
+    currentPage * ordersPerPage
+  );
 
   return (
-    <div className="overflow-x-auto ">
-      <h1 className='w-full flex font-bold justify-center pb-6 text-2xl'>مدیریت سفارشات</h1>
-      <table className="min-w-full border border-gray-300 text-sm text-right">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border border-gray-300 px-2 py-1">شماره سفارش</th>
-            <th className="border border-gray-300 px-2 py-1">نام مشتری</th>
-            <th className="border border-gray-300 px-2 py-1">ایمیل</th>
-            <th className="border border-gray-300 px-2 py-1">محصولات</th>
-            <th className="border border-gray-300 px-2 py-1">مبلغ کل</th>
-            <th className="border border-gray-300 px-2 py-1">وضعیت</th>
-            <th className="border border-gray-300 px-2 py-1">تاریخ</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            [...Array(ordersPerPage)].map((_, i) => (
-              <tr key={i}>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-16" /></td>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-24" /></td>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-32" /></td>
-                <td className="border px-2 py-1">
-                  <Skeleton className="h-4 w-full max-w-xs" />
-                  <Skeleton className="h-4 w-full max-w-xs mt-1" />
-                </td>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-20" /></td>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-24" /></td>
-                <td className="border px-2 py-1"><Skeleton className="h-4 w-24" /></td>
-              </tr>
-            ))
-          ) : (paginatedOrders.map((order) => (
-            <tr key={order.id} className="hover:bg-gray-50">
-              <td className="px-4 py-2 border">{order.orderNumber}</td>
-              <td className="px-4 py-2 border">{order.customer}</td>
-              <td className="px-4 py-2 border">{order.customerEmail}</td>
-              <td className="px-4 py-2 border">
-                  <ul className="list-disc pr-4 space-y-1 text-xs">
-                  {order.items.map((item) => (
-                    <li key={item.id}>
-                      {item.product.name} × {item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-              <td className="px-4 py-2 border">{order.total.toLocaleString()} تومان</td>
-              <td className="px-4 py-2 border">
-              {order.status === 'PAID' && (
-              <button
-                className="text-green-600 hover:text-green-800 underline"
-                onClick={() => {
-                  if (window.confirm('آیا سفارش ارسال شود؟')) {
-                    handleStatusChange(order.id, 'SHIPPED');
-                  }
-                }}
-              >
-                پرداخت شده (ارسال شود؟)
-              </button>
-            )}
-            {order.status === 'SHIPPED' && (
-              <button
-                className="text-blue-600 hover:text-blue-800 underline"
-                onClick={() => {
-                  if (window.confirm('آیا سفارش تحویل داده شد؟')) {
-                    handleStatusChange(order.id, 'DELIVERED');
-                  }
-                }}
-              >
-                ارسال شده (تحویل داده شد؟)
-              </button>
-            )}
-            {order.status === 'DELIVERED' && (
-              <span className="text-green-800 font-semibold">تحویل شده</span>
-            )}
-              </td>
-              <td className="px-4 py-2 border">
-            {new Date(order.createdAt).toLocaleDateString('fa-IR')}
-          </td>
-          </tr>
-          )))}
-        </tbody>
-      </table>
+    <div className="overflow-x-auto p-4">
+      <h1 className="mb-6 text-2xl font-bold text-center">مدیریت سفارشات</h1>
+
+      <Table>
+        <TableHeader className="bg-gray-100">
+          <TableRow>
+            <TableHead className="text-right">شماره سفارش</TableHead>
+            <TableHead className="text-right">نام مشتری</TableHead>
+            <TableHead className="text-right">ایمیل</TableHead>
+            <TableHead className="text-right">محصولات</TableHead>
+            <TableHead className="text-right">مبلغ کل</TableHead>
+            <TableHead className="text-right">وضعیت</TableHead>
+            <TableHead className="text-right">تاریخ</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {loading
+            ? [...Array(ordersPerPage)].map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-16" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-32" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-full max-w-xs" />
+                    <Skeleton className="h-4 w-full max-w-xs mt-1" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-20" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                </TableRow>
+              ))
+            : paginatedOrders.map((order) => (
+                <TableRow key={order.id} className="hover:bg-gray-50">
+                  <TableCell className="text-right">{order.orderNumber.toLocaleString('fa-IR')}</TableCell>
+                  <TableCell className="text-right">{order.customer}</TableCell>
+                  <TableCell className="text-right">{order.customerEmail}</TableCell>
+                  <TableCell className="text-right">
+                    <ul className="list-disc pr-4 space-y-1 text-xs">
+                      {order.items.map((item) => (
+                        <li key={item.id}>
+                          {item.product.name} × {item.quantity}
+                        </li>
+                      ))}
+                    </ul>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {order.total.toLocaleString('fa-IR')} تومان
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {order.status === 'PAID' && (
+                      <Button
+                        variant="link"
+                        className="text-green-600 hover:text-green-800 underline p-0 h-auto"
+                        onClick={() => {
+                          if (window.confirm('آیا سفارش ارسال شود؟')) {
+                            handleStatusChange(order.id, 'SHIPPED');
+                          }
+                        }}
+                      >
+                        پرداخت شده (ارسال شود؟)
+                      </Button>
+                    )}
+                    {order.status === 'SHIPPED' && (
+                      <Button
+                        variant="link"
+                        className="text-blue-600 hover:text-blue-800 underline p-0 h-auto"
+                        onClick={() => {
+                          if (window.confirm('آیا سفارش تحویل داده شد؟')) {
+                            handleStatusChange(order.id, 'DELIVERED');
+                          }
+                        }}
+                      >
+                        ارسال شده (تحویل داده شد؟)
+                      </Button>
+                    )}
+                    {order.status === 'DELIVERED' && (
+                      <span className="text-green-800 font-semibold">تحویل شده</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {new Date(order.createdAt).toLocaleDateString('fa-IR')}
+                  </TableCell>
+                </TableRow>
+              ))}
+        </TableBody>
+      </Table>
+
       <div className="flex flex-wrap justify-center items-center gap-2 p-4">
-    <button
-      className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
-      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-      disabled={currentPage === 1}
-    >
-      قبلی
-    </button>
+        <Button
+          variant="outline"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+        >
+          قبلی
+        </Button>
 
-    {Array.from({ length: totalPages }, (_, i) => (
-      <button
-        key={i + 1}
-        className={`px-3 py-1 border rounded ${
-          currentPage === i + 1
-            ? 'bg-blue-600 text-white'
-            : 'bg-white hover:bg-gray-100'
-        }`}
-        onClick={() => setCurrentPage(i + 1)}
-      >
-        {i + 1}
-      </button>
-    ))}
+        {Array.from({ length: totalPages }, (_, i) => (
+          <Button
+            key={i + 1}
+            variant={currentPage === i + 1 ? 'default' : 'outline'}
+            onClick={() => setCurrentPage(i + 1)}
+          >
+            {i + 1}
+          </Button>
+        ))}
 
-    <button
-      className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
-      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-      disabled={currentPage === totalPages}
-    >
-      بعدی
-    </button>
-  </div>
-</div>
+        <Button
+          variant="outline"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+        >
+          بعدی
+        </Button>
+      </div>
+    </div>
   );
 };
 

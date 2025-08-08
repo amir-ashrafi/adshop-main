@@ -45,7 +45,7 @@ export default function BlogPreviewCarousel() {
       </div>
 
       <Carousel className="w-full">
-        <CarouselContent className="-ml-1">
+        <CarouselContent className="-ml-1 max-h-96">
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => (
                 <CarouselItem key={index} className="pl-1 basis-2/3  sm:bottom-1/2 md:basis-2/5 lg:basis-1/4">
@@ -60,10 +60,10 @@ export default function BlogPreviewCarousel() {
                 </CarouselItem>
               ))
             : posts.map((post) => (
-                <CarouselItem key={post.id} className="pl-1 basis-2/3 sm:bottom-1/2 md:basis-2/5 lg:basis-1/4">
+                <CarouselItem key={post.id} className=" pl-1 text-right  sm:basis-2/3 sm:bottom-1/2 md:basis-2/5 lg:basis-1/4">
                   <div className="p-1">
                     <Link href={`/blog/${post.id}`} className="block hover:opacity-90 transition-all">
-                      <Card>
+                      <Card >
                         <CardContent className="p-3 space-y-2">
                           {post.image && (
                             <Image
@@ -75,7 +75,12 @@ export default function BlogPreviewCarousel() {
                             />
                           )}
                           <h3 className="font-semibold text-base">{post.title}</h3>
-                          <p className="text-sm text-gray-600">{post.content.slice(0, 80)}...</p>
+                          <p className="text-sm text-right rtl text-gray-600 mb-3 leading-relaxed">
+                <span dir="rtl">
+                  {post.content.slice(0, 80)}
+                  <span dir="ltr">…</span>
+                </span>
+              </p>
                           <span className="text-xs text-gray-400 block">
                             {new Date(post.createdAt).toLocaleDateString('fa-IR')}
                           </span>
