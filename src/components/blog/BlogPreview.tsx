@@ -77,7 +77,7 @@ export default function BlogPreviewCarousel() {
                           <h3 className="font-semibold text-base">{post.title}</h3>
                           <p className="text-sm text-right rtl text-gray-600 mb-3 leading-relaxed">
                 <span dir="rtl">
-                  {post.content.slice(0, 80)}
+                  {post.content.slice(0,79)}
                   <span dir="ltr">…</span>
                 </span>
               </p>

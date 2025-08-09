@@ -5,19 +5,20 @@ type CartMenuProps = {
   value: string
   number: number
   icon: React.ReactNode
+  bgColor?: string
 }
 
-function CartMenu({ value, number, icon }: CartMenuProps) {
+function CartMenu({ value, number, icon,bgColor = "bg-white"  }: CartMenuProps) {
   return (
-    <Card className="w-full shadow-sm ">
+    <Card className={`w-full shadow-sm   ${bgColor}`}>
       <CardHeader>
         <div className="flex justify-center items-center space-x-3">
-          <div className="text-muted-foreground">{icon}</div>
           <span className="text-sm font-medium">{value}</span>
+          <div className="text-muted-foreground">{icon}</div>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-2xl font-bold text-center">{number}</p>
+        <p className="text-2xl font-bold text-center">{number.toLocaleString("fa-IR")}</p>
       </CardContent>
     </Card>
   )

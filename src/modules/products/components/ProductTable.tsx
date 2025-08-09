@@ -57,9 +57,24 @@ const ProductTable = (props: {
           {products.map((product: any) => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
-              <TableCell className="text-center">{product.category}</TableCell>
-              <TableCell className="text-center">{product.price}</TableCell>
-              <TableCell className="text-center">{product.quantity}</TableCell>
+              <TableCell className="text-center">{
+                        product.category=== 'AIRPODS'
+                        ? 'ایرپاد'
+                        : product.category === 'COMPUTER'
+                        ? 'کامپیوتر'
+                        : product.category === 'LAPTOP'
+                        ? 'لپتاب'
+                        : product.category === 'MOBILE'
+                        ? 'موبایل'
+                        : product.category === 'MONITOR'
+                        ? 'مانیتور'
+                        : product.category === 'OTHERS'
+                        ? 'دیگر'
+                        : product.category === 'WATCH'
+                        ? 'ساعت هوشمند'
+                        : 'نامعلوم'}</TableCell>
+              <TableCell className="text-center">{product.price.toLocaleString("fa-IR")}</TableCell>
+              <TableCell className="text-center">{product.quantity.toLocaleString("fa-IR")}</TableCell>
               <TableCell className="text-center">
                 <Image
                   src={product.images?.[0]?.image || '/assets/noImage.jpg'}

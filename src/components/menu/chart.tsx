@@ -42,7 +42,7 @@ export default function ChartComponent({ chartData }: { chartData: ChartDataItem
   }
 
   return (
-    <Card dir="rtl">
+    <Card dir="rtl" className="bg-gradient-to-br from-blue-50 to-indigo-100 border-none shadow-md">
       <CardHeader className="text-right">
         <CardTitle>آمار سفارش‌های ماهانه</CardTitle>
         <CardDescription>آخرین آمار ۶ ماه گذشته</CardDescription>
@@ -66,12 +66,13 @@ export default function ChartComponent({ chartData }: { chartData: ChartDataItem
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop"  fill="#3b82f6"  radius={8}>
+            <Bar dataKey="desktop" fill="#3b82f6" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
                 className="fill-foreground"
                 fontSize={12}
+                formatter={(value: number) => value.toLocaleString("fa-IR")}
               />
             </Bar>
           </BarChart>
@@ -79,13 +80,15 @@ export default function ChartComponent({ chartData }: { chartData: ChartDataItem
       </CardContent>
       <CardFooter className="flex-col items-end gap-2 text-sm text-right">
         <div className="flex gap-2 font-medium leading-none items-center">
-          {trendPercentage > 0 ? 'روند صعودی' : 'روند نزولی'} به میزان 
-          <span className="font-bold px-1">{Math.abs(trendPercentage).toFixed(1)}٪</span>
+          {trendPercentage > 0 ? 'روند صعودی' : 'روند نزولی'} به میزان
+          <span className="font-bold px-1">
+            {Math.abs(trendPercentage).toLocaleString("fa-IR")}٪
+          </span>
           در این ماه
           <TrendingUp className={`h-4 w-4 ${trendPercentage < 0 ? 'rotate-180' : ''}`} />
         </div>
         <div className="leading-none text-muted-foreground">
-          میانگین {averageOrders.toFixed(1)} سفارش در ماه
+          میانگین {averageOrders.toLocaleString("fa-IR")} سفارش در ماه
         </div>
       </CardFooter>
     </Card>

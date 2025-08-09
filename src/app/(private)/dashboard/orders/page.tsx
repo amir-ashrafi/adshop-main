@@ -96,13 +96,13 @@ const OrdersPage = () => {
       <Table>
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="text-right">شماره سفارش</TableHead>
-            <TableHead className="text-right">نام مشتری</TableHead>
-            <TableHead className="text-right">ایمیل</TableHead>
-            <TableHead className="text-right">محصولات</TableHead>
-            <TableHead className="text-right">مبلغ کل</TableHead>
-            <TableHead className="text-right">وضعیت</TableHead>
-            <TableHead className="text-right">تاریخ</TableHead>
+            <TableHead className="text-center">شماره سفارش</TableHead>
+            <TableHead className="text-center">نام مشتری</TableHead>
+            <TableHead className="text-center">ایمیل</TableHead>
+            <TableHead className="text-center">محصولات</TableHead>
+            <TableHead className="text-center">مبلغ کل</TableHead>
+            <TableHead className="text-center">وضعیت</TableHead>
+            <TableHead className="text-center">تاریخ</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -135,14 +135,14 @@ const OrdersPage = () => {
                 </TableRow>
               ))
             : paginatedOrders.map((order) => (
-                <TableRow key={order.id} className="hover:bg-gray-50">
-                  <TableCell className="text-right">{order.orderNumber.toLocaleString('fa-IR')}</TableCell>
-                  <TableCell className="text-right">{order.customer}</TableCell>
-                  <TableCell className="text-right">{order.customerEmail}</TableCell>
-                  <TableCell className="text-right">
-                    <ul className="list-disc pr-4 space-y-1 text-xs">
+                <TableRow key={order.id} className="hover:bg-gray-50 ">
+                  <TableCell className="text-center">{order.orderNumber.toLocaleString('fa-IR')}</TableCell>
+                  <TableCell className="text-left">{order.customer}</TableCell>
+                  <TableCell className="text-left">{order.customerEmail}</TableCell>
+                  <TableCell className="text-center">
+                    <ul className="pr-4 list-decimal items-center justify-center flex flex-col space-y-1 text-xs">
                       {order.items.map((item) => (
-                        <li key={item.id}>
+                        <li className='' key={item.id}>
                           {item.product.name} × {item.quantity}
                         </li>
                       ))}

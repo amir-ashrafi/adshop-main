@@ -22,7 +22,6 @@ export default function RecentCustomersCard({
 }: {
   recentCustomers: Customer[];
 }) {
-  // تابع ترجمه وضعیت سفارش
   const translateStatus = (status: string) => {
     switch (status) {
       case "PAID":
@@ -37,7 +36,10 @@ export default function RecentCustomersCard({
   };
 
   return (
-    <Card dir="rtl" className="max-w-full">
+    <Card
+      dir="rtl"
+      className="max-w-full bg-gradient-to-br from-purple-50 via-white to-indigo-50 border-none shadow-md"
+    >
       <CardHeader className="text-right">
         <CardTitle>مشتریان اخیر</CardTitle>
       </CardHeader>
@@ -78,8 +80,7 @@ export default function RecentCustomersCard({
                   </p>
                   {typeof customer.total === "number" && (
                     <p className="mt-1 text-xs sm:text-sm text-green-600 font-medium">
-                      {customer.total.toLocaleString("fa-IR")}{" "}
-                      تومان
+                      {customer.total.toLocaleString("fa-IR")} تومان
                     </p>
                   )}
                 </div>

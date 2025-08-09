@@ -52,13 +52,14 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
   }, [getImages]);
 
   return (
-    <div className="w-full">
+    <div className="w-full text-black">
       <Label htmlFor="picture"> Product Image</Label>
       <div className="flex gap-2 w-full justify-between">
         <Input
           id="picture"
           type="file"
           accept="image/*"
+          className='bg-white'
           onChange={handleChangeFile}
         />
         <Button onClick={handleUpload}>Upload Image</Button>

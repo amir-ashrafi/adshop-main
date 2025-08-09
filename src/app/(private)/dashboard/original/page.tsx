@@ -83,11 +83,32 @@ export default async function Page() {
 
       {/* کارت‌های آماری */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <CartMenu value="کاربران" number={stats.users} icon={<UsersIcon className="h-5 w-5 text-muted-foreground" />} />
-        <CartMenu value="سفارش‌ها" number={stats.orders} icon={<ShoppingCartIcon className="h-5 w-5 text-muted-foreground" />} />
-        <CartMenu value="درآمد" number={stats.income} icon={<DollarSignIcon className="h-5 w-5 text-muted-foreground" />} />
-        <CartMenu value="محصولات" number={stats.products} icon={<PackageIcon className="h-5 w-5 text-muted-foreground" />} />
-      </div>
+  <CartMenu
+    value="کاربران"
+    number={stats.users}
+    icon={<UsersIcon className="h-6 w-6 text-primary" />}
+    bgColor="bg-yellow-50"
+  />
+  <CartMenu
+    value="سفارش‌ها"
+    number={stats.orders}
+    icon={<ShoppingCartIcon className="h-6 w-6 text-primary" />}
+    bgColor="bg-green-50"
+  />
+  <CartMenu
+    value="درآمد"
+    number={stats.income}
+    icon={<DollarSignIcon className="h-6 w-6 text-primary" />}
+    bgColor="bg-blue-50"
+  />
+  <CartMenu
+    value="محصولات"
+    number={stats.products}
+    icon={<PackageIcon className="h-6 w-6 text-primary" />}
+    bgColor="bg-purple-50"
+  />
+</div>
+
 
       {/* نمودار و مشتریان اخیر */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

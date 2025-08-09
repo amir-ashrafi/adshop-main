@@ -14,10 +14,10 @@ type ClerkUser = {
   banned: boolean;
 };
 
-
 export default function UsersPage() {
   const [users, setUsers] = useState<ClerkUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');  // state برای متن جستجو
 
   useEffect(() => {
     async function fetchUsers() {
@@ -27,7 +27,6 @@ export default function UsersPage() {
         const data = await res.json();
         setUsers(data.users || []);
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.error("Error fetching users:", err);
       } finally {
         setLoading(false);
@@ -54,64 +53,86 @@ export default function UsersPage() {
         return;
       }
 
-      // Refresh user list after update
+      // به‌روزرسانی لیست کاربران بعد از عملیات
       setUsers((prev) =>
-        prev.map((u) =>
-          u.id === userId
-            ? {
-                ...u,
-                role: action === "setAdmin" ? "admin" : action === "setUser" ? "user" : u.role,
-                banned:
-                  action === "ban"
-                    ? true
-                    : action === "unban"
-                    ? false
-                    : u.banned,
-              }
-            : u
-        ).filter((u) => !(action === "delete" && u.id === userId))
+        prev
+          .map((u) =>
+            u.id === userId
+              ? {
+                  ...u,
+                  role: action === "setAdmin" ? "admin" : action === "setUser" ? "user" : u.role,
+                  banned: action === "ban" ? true : action === "unban" ? false : u.banned,
+                }
+              : u
+          )
+          .filter((u) => !(action === "delete" && u.id === userId))
       );
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error("Error performing action:", err);
       alert("مشکلی پیش آمده است");
     }
   }
 
+  // فیلتر کاربران بر اساس جستجو روی نام، نام خانوادگی و ایمیل
+  const filteredUsers = users.filter((user) => {
+    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+    const search = searchTerm.toLowerCase();
+    return (
+      fullName.includes(search) ||
+      user.email.toLowerCase().includes(search)
+    );
+  });
+
   return (
     <div className="space-y-6 w-full">
       <h1 className="text-2xl font-bold flex w-full justify-center">مدیریت کاربران</h1>
 
+      {/* ورودی جستجو */}
+      <div className="flex justify-center mb-4">
+        <input
+          type="text"
+          placeholder="جستجوی کاربر..."
+          className="w-full max-w-md rounded-lg border border-gray-300 px-4 py-2 text-right shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          dir="rtl"
+        />
+      </div>
+
       {loading ? (
-  <div className="grid gap-4">
-    {[...Array(4)].map((_, i) => (
-      <Card key={i} className="flex items-center justify-between p-4">
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-3 w-32" />
+        <div className="grid gap-4">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="flex items-center justify-between p-4">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-8 w-20 rounded-md" />
+                <Skeleton className="h-8 w-20 rounded-md" />
+                <Skeleton className="h-8 w-16 rounded-md" />
+              </div>
+            </Card>
+          ))}
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Skeleton className="h-8 w-20 rounded-md" />
-          <Skeleton className="h-8 w-20 rounded-md" />
-          <Skeleton className="h-8 w-16 rounded-md" />
-        </div>
-      </Card>
-    ))}
-  </div>
-) : users.length === 0 ? (
-  <p className="text-gray-500">کاربری یافت نشد.</p>
-) : (
-        <div className="grid  gap-4">
-          {users.map(({ id, email, firstName, lastName, role, banned }) => (
-            <Card key={id} className="flex flex-col sm:flex-row items-center justify-between px-4 py-2">
+      ) : filteredUsers.length === 0 ? (
+        <p className="text-gray-500">کاربری یافت نشد.</p>
+      ) : (
+        <div className="grid gap-4">
+          {filteredUsers.map(({ id, email, firstName, lastName, role, banned }) => (
+            <Card
+              key={id}
+              className="flex flex-col bg-slate-100 sm:flex-row items-center justify-between px-4 py-2"
+            >
               <div className="flex flex-col space-y-0">
-                <p className="">
-                  <span className="text-xs pr-4"> نقش: {role=="admin"?'ادمین':'کاربر'}</span>
-                  ||
-                  <span className="text-black pl-4">{firstName} {lastName}</span>
+                <p>
+                  <span className="text-xs pr-4"> نقش: {role === "admin" ? "ادمین" : "کاربر"}</span>||
+                  <span className="text-black pl-4">
+                    {firstName} {lastName}
+                  </span>
                 </p>
                 <span className="font-semibold text-slate-500">{email}</span>
-                
+
                 <span className="text-sm text-gray-500">
                   {banned && <span className="ml-2 text-red-500">(بن شده)</span>}
                 </span>
@@ -134,10 +155,7 @@ export default function UsersPage() {
                   {banned ? "رفع بن" : "بن کن"}
                 </Button>
 
-                <Button
-                  variant="destructive"
-                  onClick={() => handleUserAction(id, "delete")}
-                >
+                <Button variant="destructive" onClick={() => handleUserAction(id, "delete")}>
                   حذف
                 </Button>
               </div>
