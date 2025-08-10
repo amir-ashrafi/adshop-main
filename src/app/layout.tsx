@@ -10,6 +10,7 @@ import ReactQueryProvider from '@/providers/ReactQuery';
 import CartDropdown from '@/components/cart';
 import { faIR } from '@clerk/localizations'
 import BackButton from '@/components/back';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export const metadata: Metadata = {
   title: 'ADShop',
@@ -61,6 +62,7 @@ export default function RootLayout({
               </header>
               
               <div className="relative mt-10 ">
+              <ScrollToTop/>
                 {children}
                 <Toaster />
               </div>
