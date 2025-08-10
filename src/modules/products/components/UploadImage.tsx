@@ -53,7 +53,7 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
 
   return (
     <div className="w-full text-black">
-      <Label htmlFor="picture"> Product Image</Label>
+      <Label htmlFor="picture" className='text-white text-right'> تصویر محصول</Label>
       <div className="flex gap-2 w-full justify-between">
         <Input
           id="picture"
@@ -62,7 +62,7 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
           className='bg-white'
           onChange={handleChangeFile}
         />
-        <Button onClick={handleUpload}>Upload Image</Button>
+        <Button onClick={handleUpload}>اپلود تصویر</Button>
       </div>
       {loading ? (
         <Spinner />
