@@ -53,7 +53,7 @@ const UploadImage: FC<{ productId: string }> = ({ productId }) => {
 
   return (
     <div className="w-full text-black">
-      <Label htmlFor="picture" className='text-white justify-end flex text-right mb-3'> تصویر محصول</Label>
+      <Label htmlFor="picture" className='text-white justify-end flex text-right mb-3 mr-1'> تصویر محصول</Label>
       <div className="flex gap-2 w-full justify-between">
         <Input
           id="picture"
