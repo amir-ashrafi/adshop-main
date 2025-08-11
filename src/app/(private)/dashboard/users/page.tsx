@@ -17,7 +17,8 @@ type ClerkUser = {
 export default function UsersPage() {
   const [users, setUsers] = useState<ClerkUser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');  // state برای متن جستجو
+  const [searchTerm, setSearchTerm] = useState('');
+  const [message, setMessage] = useState<string | null>(null); // پیام موفقیت یا خطا
 
   useEffect(() => {
     async function fetchUsers() {
@@ -40,20 +41,18 @@ export default function UsersPage() {
     try {
       const res = await fetch("/api/users", {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, action }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        alert(`خطا: ${result.error || "خطای ناشناخته"}`);
+        setMessage(`❌ خطا: ${result.error || "خطای ناشناخته"}`);
         return;
       }
 
-      // به‌روزرسانی لیست کاربران بعد از عملیات
+      // بروزرسانی لیست
       setUsers((prev) =>
         prev
           .map((u) =>
@@ -67,13 +66,28 @@ export default function UsersPage() {
           )
           .filter((u) => !(action === "delete" && u.id === userId))
       );
+
+      // پیام موفقیت برای تغییر نقش
+      if (action === "setAdmin" || action === "setUser") {
+        setMessage("✅ نقش کاربر با موفقیت تغییر یافت");
+      } else if (action === "ban") {
+        setMessage("🚫 کاربر بن شد");
+      } else if (action === "unban") {
+        setMessage("✅ بن کاربر برداشته شد");
+      } else if (action === "delete") {
+        setMessage("🗑 کاربر حذف شد");
+      }
+
+      // حذف پیام بعد از 3 ثانیه
+      setTimeout(() => setMessage(null), 3000);
+
     } catch (err) {
       console.error("Error performing action:", err);
-      alert("مشکلی پیش آمده است");
+      setMessage("❌ مشکلی پیش آمده است");
+      setTimeout(() => setMessage(null), 3000);
     }
   }
 
-  // فیلتر کاربران بر اساس جستجو روی نام، نام خانوادگی و ایمیل
   const filteredUsers = users.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
     const search = searchTerm.toLowerCase();
@@ -87,6 +101,13 @@ export default function UsersPage() {
     <div className="space-y-6 w-full">
       <h1 className="text-2xl font-bold flex w-full justify-center">مدیریت کاربران</h1>
 
+      {/* نمایش پیام */}
+
+      {message && (
+        <div className="bg-green-100 absolute left-1/3 top-16 text-green-800 px-4 py-2 rounded-lg shadow-md text-center">
+          {message}
+        </div>
+      )}
       {/* ورودی جستجو */}
       <div className="flex justify-center mb-4">
         <input
@@ -132,7 +153,6 @@ export default function UsersPage() {
                   </span>
                 </p>
                 <span className="font-semibold text-slate-500">{email}</span>
-
                 <span className="text-sm text-gray-500">
                   {banned && <span className="ml-2 text-red-500">(بن شده)</span>}
                 </span>
