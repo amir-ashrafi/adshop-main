@@ -51,6 +51,7 @@ function Bestmobile() {
                       duration-300"
                   priority
                 />
+                <h1 className='z-10 absolute right-2 text-blue-600 sm:text-base lg:right-28 xl:right-36 xl:text-2xl xl:top-12 font-bold lg:text-xl sm:right-16 text-xs top-8'>همه محصولات را اینجا انتخاب کن</h1>
               </CardContent>
           </Link>
 
