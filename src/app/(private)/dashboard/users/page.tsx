@@ -104,7 +104,7 @@ export default function UsersPage() {
       {/* نمایش پیام */}
 
       {message && (
-        <div className="bg-green-100 absolute left-1/3 top-16 text-green-800 px-4 py-2 rounded-lg shadow-md text-center">
+        <div className="bg-green-100 absolute right-20 top-20 text-green-800 px-4 py-2 rounded-lg shadow-md text-center">
           {message}
         </div>
       )}
