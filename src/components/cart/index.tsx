@@ -34,6 +34,7 @@ export default function CartDropdown() {
       setIsPaying(false);
     }
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,17 +42,17 @@ export default function CartDropdown() {
           <ShoppingCart size={24} />
           {cart?.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cart.length}
+              {cart.length.toLocaleString("fa-IR")}
             </span>
           )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72 p-4">
-        <h4 className="text-lg font-semibold mb-2">Cart Items</h4>
+        <h4 className="text-lg font-semibold mb-2">سبد خرید</h4>
         {isLoading ? (
-          <p>loading...</p>
+          <p>در حال بارگذاری...</p>
         ) : !cart || cart.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <p>سبد خرید شما خالی است.</p>
         ) : (
           <div className="space-y-3">
             {cart.map((item: CartWithProduct) => {
@@ -60,6 +61,10 @@ export default function CartDropdown() {
                 item.product.discount || null,
                 item.product.discountEndsAt || null
               );
+
+              // فرض می‌کنیم قیمت‌ها به هزار تومان است
+              const priceInToman = finalPrice * 1000;
+
               return (
                 <div
                   key={item.id}
@@ -68,10 +73,10 @@ export default function CartDropdown() {
                   <div>
                     <p className="text-sm font-medium">{item.product.name}</p>
                     <p className="text-xs text-gray-500">
-                      Price: ${finalPrice.toFixed(2)}
+                      تعداد: {item.quantity.toLocaleString("fa-IR")}
                     </p>
                     <p className="text-xs text-gray-500">
-                      Quantity: {item.quantity}
+                      قیمت: {priceInToman.toLocaleString("fa-IR")} تومان
                     </p>
                   </div>
                   <Button
@@ -90,7 +95,7 @@ export default function CartDropdown() {
               disabled={isPaying}
               variant="default"
             >
-              {isPaying ? 'در حال پرداخت...' : 'پرداخت (الکی)'}
+              {isPaying ? 'در حال پرداخت...' : 'پرداخت (آزمایشی)'}
             </Button>
           </div>
         )}
